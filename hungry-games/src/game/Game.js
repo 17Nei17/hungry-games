@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import JsxParser from 'react-jsx-parser';
 import IdleAction from "./action/idleAction"
 import suicideAction from "./action/suicideAction"
 import dayStatusList from "./action/dayStatusList"
@@ -20,12 +21,15 @@ function Game(props) {
                     newArray[index].statusText = newInfo.text;
                     newArray[index].isAlive = newInfo.isAlive;
                     newArray[index].isSettedStatus = true;
+                    newArray[index].murdersNumber = user.murdersNumber;
                 } else {
                     // обычное назначение событий
                     newInfo = setStatus(user, newArray);
+                    console.log(newInfo)
                     newArray[index].statusText = newInfo.text;
                     newArray[index].isAlive = newInfo.isAlive;
                     newArray[index].isSettedStatus = true;
+                    newArray[index].murdersNumber = newInfo.murdersNumber;
                     if (newInfo.anotherUserIndex !== undefined) {
                         newArray[index].secondUser = newArray[newInfo.anotherUserIndex];
                         newArray[newInfo.anotherUserIndex].isUsed = true;
@@ -73,11 +77,16 @@ function Game(props) {
             case 'suicide':
                 // suicide
                 let suicideStatusNumber = Math.floor(Math.random() * (suicideAction.caseLength));
-                return { text: suicideAction(suicideStatusNumber, user.name), isAlive: false };
+                let postGameNew = [...props.postGameList];
+                postGameNew.push({ name: user.name, murdersNumber: user.murdersNumber });
+                props.setPostGameList(postGameNew);
+                console.log('suicide')
+                console.log(user)
+                return { text: suicideAction(suicideStatusNumber, user.name), isAlive: false, murdersNumber: user.murdersNumber };
             case 'idle':
                 // idle
                 let idleStatusNumber = Math.floor(Math.random() * (IdleAction.caseLength));
-                return { text: IdleAction(idleStatusNumber, user.name), isAlive: true };
+                return { text: IdleAction(idleStatusNumber, user.name), isAlive: true, murdersNumber: user.murdersNumber };
             case 'friendly':
                 // friendly 
                 let friendlyStatusNumber = Math.floor(Math.random() * (friendlyAction.caseLength));
@@ -86,10 +95,10 @@ function Game(props) {
                 if (result !== -1) {
                     anotherUserIndex = result;
                     secondName = props.usersList[anotherUserIndex].name;
-                    return { text: friendlyAction(friendlyStatusNumber, currentFriendName, secondName), isAlive: true, anotherUserIndex: anotherUserIndex };
+                    return { text: friendlyAction(friendlyStatusNumber, currentFriendName, secondName), isAlive: true, anotherUserIndex: anotherUserIndex, murdersNumber: user.murdersNumber };
                 } else {
                     let aloneActionNumber = Math.floor(Math.random() * (aloneAction.caseLength));
-                    return { text: aloneAction(aloneActionNumber, user.name), isAlive: true };
+                    return { text: aloneAction(aloneActionNumber, user.name), isAlive: true, murdersNumber: user.murdersNumber };
                 }
             case 'aggresive':
                 // aggresive 
@@ -99,10 +108,13 @@ function Game(props) {
                 if (result !== -1) {
                     diedUserIndex = result;
                     diedUser = props.usersList[diedUserIndex].name;
-                    return { text: AggresiveAction(aggresiveStatusNumber, currentFriendName, diedUser), isAlive: true, anotherUserIndex: diedUserIndex, isAggresiveAction: true };
+                    let postGameNew = [...props.postGameList];
+                    postGameNew.push({ name: diedUser, murdersNumber: props.usersList[diedUserIndex].murdersNumber });
+                    props.setPostGameList(postGameNew);
+                    return { text: AggresiveAction(aggresiveStatusNumber, currentFriendName, diedUser), isAlive: true, anotherUserIndex: diedUserIndex, isAggresiveAction: true, murdersNumber: user.murdersNumber + 1 };
                 } else {
                     let aloneActionNumber = Math.floor(Math.random() * (aloneAction.caseLength));
-                    return { text: aloneAction(aloneActionNumber, user.name), isAlive: true };
+                    return { text: aloneAction(aloneActionNumber, user.name), isAlive: true, murdersNumber: user.murdersNumber };
                 }
             default:
 
@@ -129,14 +141,14 @@ function Game(props) {
                 return (
                     <div className='cornflowerblue'>
                         <div className='userItem-wrap'>
-                            <div className='userItem'>
+                            <div className={(user.isAlive ? 'alive' : 'dead') + ' userItem'}>
                                 <div className="userName">{user.name}</div>
                                 <img className="userImage" src={user.img} />
                                 <div className="userName">{user.isAlive ? 'живой' : 'мертв'}</div>
                                 {/* <div>isUsed={user.isUsed.toString()}</div>
                                 <div>isfinallyMovedFromGame = {user.isfinallyMovedFromGame.toString()}</div> */}
                             </div>
-                            <div className="userItem">
+                            <div className={(user.secondUser.isAlive ? 'alive' : 'dead') + " userItem"}>
                                 <div className="userName">{user.secondUser.name}</div>
                                 <img className="userImage" src={user.secondUser.img} />
                                 <div className="userName">{user.secondUser.isAlive ? 'живой' : 'мертв'}</div>
@@ -144,18 +156,19 @@ function Game(props) {
                                 <div>isfinallyMovedFromGame = {user.secondUser.isfinallyMovedFromGame.toString()}</div> */}
                             </div>
                         </div>
-                        <div>{user.statusText}</div>
+                        <div><JsxParser jsx={user.statusText} /></div>
                     </div>)
 
             } else {
-                return <div className={user.isUsed ? 'userItem hidden' : 'userItem' + (user.isfinallyMovedFromGame ? ' ordered' : '')}>
+                let additionalClass = user.isAlive ? ' alive' : ' dead';
+                return <div className={user.isUsed ? 'userItem hidden' : 'userItem' + (user.isfinallyMovedFromGame ? ' ordered' : '') + additionalClass}>
                     <div className="userName">{user.name}</div>
                     {/* <div>isUsed={user.isUsed.toString()}</div> */}
                     <img className="userImage" src={user.img} />
                     {user.secondUser && <img className="userImage" src={user.secondUser.img} />}
 
                     <div className="userName">{user.isAlive ? 'живой' : 'мертв'}</div>
-                    <div>{user.statusText}</div>
+                    <div><JsxParser jsx={user.statusText} /></div>
                     {/* <div>isfinallyMovedFromGame = {user.isfinallyMovedFromGame.toString()}</div> */}
                 </div>
             }

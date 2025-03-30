@@ -43,9 +43,9 @@ function UserList(props) {
           'isAlive': true,
           'statusText': "Осматривается",
           'isfinallyMovedFromGame': false,
+          'murdersNumber': 0,
         }
       ]);
-      // setShowForm(false);
       props.setHelpText("");
     }
   }
@@ -60,9 +60,9 @@ function UserList(props) {
 
 
   return (
-    <div>
+    <div className="centered">
       {isShowForm && <AddUserForm addUser={addUser} settings={settings}></AddUserForm>}
-      <div className="userlist">
+      <div className="userlistBeforeGame">
         {renderUsers()}
       </div>
       {!isShowForm && <button onClick={() => { setShowForm(true) }}>Добавить участника</button>}

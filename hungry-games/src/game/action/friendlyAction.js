@@ -1,19 +1,19 @@
 let friendlyActionArr = [];
 function friendlyAction(number = 0, name1 = '', name2 = '') {
     friendlyActionArr = [
-        `Обнявшись, ${name1} и ${name2} поют песни`,
-        `${name1} и ${name2} спят вместе около костра`,
-        `${name1} словил рыбу и поделился ей с ${name2}`,
-        `${name1} взахлёб рассказывает историю ${name2}`,
-        `${name1} сидит рядышком с ${name2}`,
-        `${name1} отдал в долг ${name2} 1000 рублей`,
-        `${name1} играет в прятки с ${name2}`,
-        `${name1} напевает песню ${name2}`,
-        `${name1}, озираясь, шепчет что-то на ушко ${name2}`,
-        `${name1} встретился взглядом с ${name2} и отвёл глаза`,
-        `${name1} легонько кусает ${name2}`,
-        `${name1} рассказывает ${name2} о назначении разных трав`,
-        `${name1} гладит ${name2} по голове`,
+        `Обнявшись, <span class='member-name'>${name1}</span> и <span class='member-name'>${name2}</span> поют песни`,
+        `<span class='member-name'>${name1}</span> и <span class='member-name'>${name2}</span> спят вместе около костра`,
+        `<span class='member-name'>${name1}</span> словил рыбу и поделился ей с <span class='member-name'>${name2}</span>`,
+        `<span class='member-name'>${name1}</span> взахлёб рассказывает историю <span class='member-name'>${name2}</span>`,
+        `<span class='member-name'>${name1}</span> сидит рядышком с <span class='member-name'>${name2}</span>`,
+        `<span class='member-name'>${name1}</span> отдал в долг <span class='member-name'>${name2}</span> 1000 рублей`,
+        `<span class='member-name'>${name1}</span> играет в прятки с <span class='member-name'>${name2}</span>`,
+        `<span class='member-name'>${name1}</span> напевает песню <span class='member-name'>${name2}</span>`,
+        `<span class='member-name'>${name1}</span>, озираясь, шепчет что-то на ушко <span class='member-name'>${name2}</span>`,
+        `<span class='member-name'>${name1}</span> встретился взглядом с <span class='member-name'>${name2}</span> и отвёл глаза`,
+        `<span class='member-name'>${name1}</span> легонько кусает <span class='member-name'>${name2}</span>`,
+        `<span class='member-name'>${name1}</span> рассказывает <span class='member-name'>${name2}</span> о назначении разных трав`,
+        `<span class='member-name'>${name1}</span> гладит <span class='member-name'>${name2}</span> по голове`,
     ]
     return friendlyActionArr[number];
 }
