@@ -34,6 +34,7 @@ function App() {
       user.isAlive = true;
       user.statusText = "Осматривается";
       user.isfinallyMovedFromGame = false;
+      user.murdersNumber = 0;
     })
     setUsersList(oldArrUserList);
     setAppState("settings");
@@ -56,7 +57,8 @@ function App() {
       {appState === 'end' && <End
         usersList={usersList}
         restart={restart}
-        postGameList={postGameList} />}
+        postGameList={postGameList}
+        setPostGameList={setPostGameList} />}
       {appState === 'about' && <About
         setAppState={setAppState}
         setHelpText={setHelpText} />}

@@ -6,12 +6,14 @@ import dayStatusList from "./action/dayStatusList"
 import friendlyAction from "./action/friendlyAction"
 import AggresiveAction from "./action/AggresiveAction"
 import aloneAction from "./action/aloneAction"
+import shuffleArr from "./action/shuffleArr"
+
 
 function Game(props) {
     const [stateBattle, setStateBattle] = useState({ day: 1, action: 'Начало первого дня', time: "День" });
 
     function addStatuses() {
-        const newArray = [...props.usersList];
+        let newArray = [...props.usersList];
         props.usersList.forEach((user, index) => {
             if (newArray[index].isAlive) {
                 let newInfo;
@@ -25,7 +27,13 @@ function Game(props) {
                 } else {
                     // обычное назначение событий
                     newInfo = setStatus(user, newArray);
-                    console.log(newInfo)
+                    console.log(props.postGameList);
+                    if (!newInfo.isAlive) {
+                        let postGameNew = props.postGameList;
+                        postGameNew.unshift({ name: user.name, murdersNumber: newInfo.murdersNumber });
+                        props.setPostGameList(postGameNew);
+                    }
+                    console.log(props.postGameList);
                     newArray[index].statusText = newInfo.text;
                     newArray[index].isAlive = newInfo.isAlive;
                     newArray[index].isSettedStatus = true;
@@ -34,10 +42,16 @@ function Game(props) {
                         newArray[index].secondUser = newArray[newInfo.anotherUserIndex];
                         newArray[newInfo.anotherUserIndex].isUsed = true;
                         newArray[newInfo.anotherUserIndex].isAlive = newInfo.isAggresiveAction ? false : true;
+                        if (!newArray[newInfo.anotherUserIndex].isAlive) {
+                            let postGameNew = props.postGameList;
+                            postGameNew.unshift({ name: newArray[newInfo.anotherUserIndex].name, murdersNumber: newArray[newInfo.anotherUserIndex].murdersNumber });
+                            props.setPostGameList(postGameNew);
+                        }
                     }
                 }
             }
         })
+        newArray = shuffleArr(newArray)
         props.setUsersList(newArray);
     }
 
@@ -77,11 +91,6 @@ function Game(props) {
             case 'suicide':
                 // suicide
                 let suicideStatusNumber = Math.floor(Math.random() * (suicideAction.caseLength));
-                let postGameNew = [...props.postGameList];
-                postGameNew.push({ name: user.name, murdersNumber: user.murdersNumber });
-                props.setPostGameList(postGameNew);
-                console.log('suicide')
-                console.log(user)
                 return { text: suicideAction(suicideStatusNumber, user.name), isAlive: false, murdersNumber: user.murdersNumber };
             case 'idle':
                 // idle
@@ -108,9 +117,6 @@ function Game(props) {
                 if (result !== -1) {
                     diedUserIndex = result;
                     diedUser = props.usersList[diedUserIndex].name;
-                    let postGameNew = [...props.postGameList];
-                    postGameNew.push({ name: diedUser, murdersNumber: props.usersList[diedUserIndex].murdersNumber });
-                    props.setPostGameList(postGameNew);
                     return { text: AggresiveAction(aggresiveStatusNumber, currentFriendName, diedUser), isAlive: true, anotherUserIndex: diedUserIndex, isAggresiveAction: true, murdersNumber: user.murdersNumber + 1 };
                 } else {
                     let aloneActionNumber = Math.floor(Math.random() * (aloneAction.caseLength));
@@ -119,6 +125,7 @@ function Game(props) {
             default:
 
         }
+
     }
 
 
