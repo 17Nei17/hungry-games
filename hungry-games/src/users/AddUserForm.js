@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 // let obj = { img: 'src', name: 'str', gender: 'srt', friend: 'name' }
 
+
 function AddUserForm(props) {
     const [name, setName] = useState('');
     const [gender, setGender] = useState('');
