@@ -171,10 +171,10 @@ function Game(props) {
     }
 
     function getSpecialDay() {
-        // if (Math.floor(Math.random() * 10) === 9) {
-        //     return true;
-        // } else return false;
-        return true;
+        if (Math.floor(Math.random() * 10) === 9) { // 10% шанса
+            return true;
+        } else return false;
+
     }
 
 
