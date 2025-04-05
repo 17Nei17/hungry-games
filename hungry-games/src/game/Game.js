@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import shuffleArr from "./helpers/shuffleArr"
 import GameRender from "./GameRender.js"
@@ -18,7 +18,12 @@ import suicideFloodAction from "./flood-action/suicideFloodAction.js"
 
 
 function Game(props) {
-    const [stateBattle, setStateBattle] = useState({ day: 1, action: 'Начало первого дня', time: "День" });
+    const [stateBattle, setStateBattle] = useState({ day: 1, action: 'Начало первого дня', time: "День", actionType: "standart" });
+
+    useEffect(() => {
+        console.log(stateBattle);
+        addStatuses();
+    }, [stateBattle])
 
     function addStatuses() {
         let newArray = [...props.usersList];
@@ -35,13 +40,11 @@ function Game(props) {
                 } else {
                     // обычное назначение событий
                     newInfo = setStatus(user, newArray);
-                    console.log(props.postGameList);
                     if (!newInfo.isAlive) {
                         let postGameNew = props.postGameList;
                         postGameNew.unshift({ name: user.name, murdersNumber: newInfo.murdersNumber });
                         props.setPostGameList(postGameNew);
                     }
-                    console.log(props.postGameList);
                     newArray[index].statusText = newInfo.text;
                     newArray[index].isAlive = newInfo.isAlive;
                     newArray[index].isSettedStatus = true;
@@ -99,7 +102,7 @@ function Game(props) {
             case 'suicide':
                 // suicide
                 let suicideStatusNumber;
-                if (stateBattle.action === 'standart') {
+                if (stateBattle.actionType === 'standart') {
                     suicideStatusNumber = Math.floor(Math.random() * (suicideAction.caseLength));
                     return { text: suicideAction(suicideStatusNumber, user.name), isAlive: false, murdersNumber: user.murdersNumber };
                 } else {
@@ -109,7 +112,7 @@ function Game(props) {
             case 'idle':
                 // idle
                 let idleStatusNumber;
-                if (stateBattle.action === 'standart') {
+                if (stateBattle.actionType === 'standart') {
                     idleStatusNumber = Math.floor(Math.random() * (IdleAction.caseLength));
                     return { text: IdleAction(idleStatusNumber, user.name), isAlive: true, murdersNumber: user.murdersNumber };
                 } else {
@@ -124,7 +127,7 @@ function Game(props) {
                 if (result !== -1) {
                     anotherUserIndex = result;
                     secondName = props.usersList[anotherUserIndex].name;
-                    if (stateBattle.action === 'standart') {
+                    if (stateBattle.actionType === 'standart') {
                         friendlyStatusNumber = Math.floor(Math.random() * (friendlyAction.caseLength));
                         return { text: friendlyAction(friendlyStatusNumber, currentFriendName, secondName), isAlive: true, anotherUserIndex: anotherUserIndex, murdersNumber: user.murdersNumber };
                     } else {
@@ -133,7 +136,7 @@ function Game(props) {
                     }
                 } else {
                     let aloneActionNumber;
-                    if (stateBattle.action === 'standart') {
+                    if (stateBattle.actionType === 'standart') {
                         aloneActionNumber = Math.floor(Math.random() * (aloneAction.caseLength));
                         return { text: aloneAction(aloneActionNumber, user.name), isAlive: true, murdersNumber: user.murdersNumber };
                     } else {
@@ -149,7 +152,7 @@ function Game(props) {
                 if (result !== -1) {
                     diedUserIndex = result;
                     diedUser = props.usersList[diedUserIndex].name;
-                    if (stateBattle.action === 'standart') {
+                    if (stateBattle.actionType === 'standart') {
                         aggresiveStatusNumber = Math.floor(Math.random() * (AggresiveAction.caseLength));
                         return { text: AggresiveAction(aggresiveStatusNumber, currentFriendName, diedUser), isAlive: true, anotherUserIndex: diedUserIndex, isAggresiveAction: true, murdersNumber: user.murdersNumber + 1 };
                     } else {
@@ -158,7 +161,7 @@ function Game(props) {
                     }
                 } else {
                     let aloneActionNumber;
-                    if (stateBattle.action === 'standart') {
+                    if (stateBattle.actionType === 'standart') {
                         aloneActionNumber = Math.floor(Math.random() * (aloneAction.caseLength));
                         return { text: aloneAction(aloneActionNumber, user.name), isAlive: true, murdersNumber: user.murdersNumber };
                     } else {
@@ -174,7 +177,6 @@ function Game(props) {
         if (Math.floor(Math.random() * 10) === 9) { // 10% шанса
             return true;
         } else return false;
-
     }
 
 
@@ -182,27 +184,25 @@ function Game(props) {
         clearStatuses();
         let isSpecialDay = getSpecialDay();
         let statusNumber;
-        isSpecialDay && (statusNumber = 0);
-        !isSpecialDay && (statusNumber = 1);
+        isSpecialDay && (statusNumber = 1);
+        !isSpecialDay && (statusNumber = 0);
         // let statusNumber = Math.floor(Math.random() * dayStatusList.length);
         let newDay = stateBattle.time === "Ночь" ? stateBattle.day + 1 : stateBattle.day;
-        setStateBattle({ day: newDay, time: stateBattle.time === "Ночь" ? 'День' : "Ночь", action: dayStatusList[statusNumber].status, actionType: dayStatusList[statusNumber].action });
+        setStateBattle({
+            day: newDay,
+            time: stateBattle.time === "Ночь" ? 'День' : "Ночь",
+            action: dayStatusList[statusNumber].action,
+            actionType: dayStatusList[statusNumber].actionType
+        });
         if ((props.usersList.filter((user) => user.isAlive == true)).length <= 1) {
             props.endGame();
         }
-        addStatuses();
     }
 
 
 
     return (
         <GameRender stateBattle={stateBattle} nextDay={nextDay} usersList={props.usersList}></GameRender>
-        // <div className="">
-        //     <div>{stateBattle.time} - {stateBattle.day}</div>
-        //     <div>{stateBattle.action}</div>
-        //     <div className="userlist">{renderParty()}</div>
-        //     <button onClick={() => { nextDay() }}>Дальше</button>
-        // </div>
     );
 }
 

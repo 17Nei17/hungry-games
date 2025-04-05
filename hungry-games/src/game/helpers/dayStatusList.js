@@ -1,7 +1,7 @@
 let dayStatusList = [
-    { status: "Ничего необычного", action: 'standart' },
+    { action: "Ничего необычного", actionType: 'standart' },
     // { status: "Сильная Гроза" },
-    { status: "Наводнение", action: 'flood' },
+    { action: "Наводнение", actionType: 'flood' },
     // { status: "Нашествие лягушек" },
 ]
 
