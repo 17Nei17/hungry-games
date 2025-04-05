@@ -36,7 +36,7 @@ function AddUserForm(props) {
                     <p>Пол</p>
                     <input type="text" name="gender" value={gender} onChange={(event) => setGender(event.target.value)} />
                 </label> */}
-                    <input class="button" type="submit" value="Добавить персонажа" />
+                    <input className="button" type="submit" value="Добавить персонажа" />
                     <button onClick={() => { props.settings() }}>Убрать форму</button>
                 </div>
             </form>
