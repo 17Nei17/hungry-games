@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from 'react';
-import JsxParser from 'react-jsx-parser';
+import React, { useState } from 'react';
 import IdleAction from "./standart-action/idleAction"
 import suicideAction from "./standart-action/suicideAction"
 import dayStatusList from "./helpers/dayStatusList"
