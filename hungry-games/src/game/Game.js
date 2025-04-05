@@ -3,27 +3,29 @@ import React, { useState, useEffect } from 'react';
 import shuffleArr from "./helpers/shuffleArr"
 import GameRender from "./GameRender.js"
 import dayStatusList from "./helpers/dayStatusList"
+import getRandonNumber from './helpers/getRandonNumber.js';
 
 import IdleAction from "./standart-action/idleAction"
-import friendlyAction from "./standart-action/friendlyAction"
-import AggresiveAction from "./standart-action/AggresiveAction"
-import aloneAction from "./standart-action/aloneAction"
-import suicideAction from "./standart-action/suicideAction"
 
-import IdleFloodAction from "./flood-action/idleFloodAction.js"
-import friendlyFloodAction from "./flood-action/friendlyFloodAction.js"
-import AggresiveFloodAction from "./flood-action/aggresiveFloodAction.js"
-import aloneFloodAction from "./flood-action/aloneFloodAction.js"
-import suicideFloodAction from "./flood-action/suicideFloodAction.js"
-
+import suicideActionSelector from './actionSelectors/suicideActionSelector.js'
+import friendlyActionSelector from './actionSelectors/friendlyActionSelector.js'
+import aloneActionSelector from './actionSelectors/aloneActionSelector.js'
+import idleActionSelector from './actionSelectors/idleActionSelector.js'
+import aggresiveActionSelector from './actionSelectors/aggresiveActionSelector.js'
 
 function Game(props) {
     const [stateBattle, setStateBattle] = useState({ day: 1, action: 'Начало первого дня', time: "День", actionType: "standart" });
 
+    // useEffect(() => {
+    //     clearStatuses();
+    // }, [0])
+
     useEffect(() => {
-        console.log(stateBattle);
-        addStatuses();
+        if (stateBattle.action !== 'Начало первого дня') {
+            addStatuses();
+        }
     }, [stateBattle])
+
 
     function addStatuses() {
         let newArray = [...props.usersList];
@@ -64,6 +66,8 @@ function Game(props) {
         })
         newArray = shuffleArr(newArray)
         props.setUsersList(newArray);
+        // console.log('addStatuses')
+        // console.log(props.usersList)
     }
 
     function clearStatuses() {
@@ -84,9 +88,7 @@ function Game(props) {
     }
 
     function setStatus(user, newArray) {
-        let currentFriendName = user.name;
-
-        let action = Math.floor(Math.random() * 100);
+        let action = getRandonNumber(100);
         if (action >= 0 && action <= 10) {
             action = 'suicide';
         } else if (action > 10 && action <= 50) {
@@ -97,84 +99,38 @@ function Game(props) {
             action = 'aggresive';
         }
 
-        const result = newArray.findIndex((item) => (item.name !== currentFriendName && item.isAlive && !item.isSettedStatus && !item.isUsed));
+        const result = newArray.findIndex((item) => (item.name !== user.name && item.isAlive && !item.isSettedStatus && !item.isUsed));
         switch (action) {
             case 'suicide':
                 // suicide
-                let suicideStatusNumber;
-                if (stateBattle.actionType === 'standart') {
-                    suicideStatusNumber = Math.floor(Math.random() * (suicideAction.caseLength));
-                    return { text: suicideAction(suicideStatusNumber, user.name), isAlive: false, murdersNumber: user.murdersNumber };
-                } else {
-                    suicideStatusNumber = Math.floor(Math.random() * (suicideFloodAction.caseLength));
-                    return { text: suicideFloodAction(suicideStatusNumber, user.name), isAlive: false, murdersNumber: user.murdersNumber };
-                }
+                return suicideActionSelector(stateBattle.actionType, user);
             case 'idle':
                 // idle
-                let idleStatusNumber;
-                if (stateBattle.actionType === 'standart') {
-                    idleStatusNumber = Math.floor(Math.random() * (IdleAction.caseLength));
-                    return { text: IdleAction(idleStatusNumber, user.name), isAlive: true, murdersNumber: user.murdersNumber };
-                } else {
-                    idleStatusNumber = Math.floor(Math.random() * (IdleFloodAction.caseLength));
-                    return { text: IdleFloodAction(idleStatusNumber, user.name), isAlive: true, murdersNumber: user.murdersNumber };
-                }
+                return idleActionSelector(stateBattle.actionType, user);
             case 'friendly':
                 // friendly 
-                let friendlyStatusNumber = Math.floor(Math.random() * (friendlyAction.caseLength));
-                let anotherUserIndex;
-                let secondName;
                 if (result !== -1) {
-                    anotherUserIndex = result;
-                    secondName = props.usersList[anotherUserIndex].name;
-                    if (stateBattle.actionType === 'standart') {
-                        friendlyStatusNumber = Math.floor(Math.random() * (friendlyAction.caseLength));
-                        return { text: friendlyAction(friendlyStatusNumber, currentFriendName, secondName), isAlive: true, anotherUserIndex: anotherUserIndex, murdersNumber: user.murdersNumber };
-                    } else {
-                        friendlyStatusNumber = Math.floor(Math.random() * (friendlyFloodAction.caseLength));
-                        return { text: friendlyFloodAction(friendlyStatusNumber, currentFriendName, secondName), isAlive: true, anotherUserIndex: anotherUserIndex, murdersNumber: user.murdersNumber };
-                    }
+                    let anotherUserIndex = result;
+                    let secondName = props.usersList[anotherUserIndex].name;
+                    return friendlyActionSelector(stateBattle.actionType, user, secondName, anotherUserIndex);
                 } else {
-                    let aloneActionNumber;
-                    if (stateBattle.actionType === 'standart') {
-                        aloneActionNumber = Math.floor(Math.random() * (aloneAction.caseLength));
-                        return { text: aloneAction(aloneActionNumber, user.name), isAlive: true, murdersNumber: user.murdersNumber };
-                    } else {
-                        aloneActionNumber = Math.floor(Math.random() * (aloneFloodAction.caseLength));
-                        return { text: aloneFloodAction(aloneActionNumber, user.name), isAlive: true, murdersNumber: user.murdersNumber };
-                    }
+                    return aloneActionSelector(stateBattle.actionType, user);
                 }
             case 'aggresive':
                 // aggresive 
-                let aggresiveStatusNumber;
-                let diedUserIndex;
-                let diedUser;
                 if (result !== -1) {
-                    diedUserIndex = result;
-                    diedUser = props.usersList[diedUserIndex].name;
-                    if (stateBattle.actionType === 'standart') {
-                        aggresiveStatusNumber = Math.floor(Math.random() * (AggresiveAction.caseLength));
-                        return { text: AggresiveAction(aggresiveStatusNumber, currentFriendName, diedUser), isAlive: true, anotherUserIndex: diedUserIndex, isAggresiveAction: true, murdersNumber: user.murdersNumber + 1 };
-                    } else {
-                        aggresiveStatusNumber = Math.floor(Math.random() * (AggresiveFloodAction.caseLength));
-                        return { text: AggresiveFloodAction(aggresiveStatusNumber, currentFriendName, diedUser), isAlive: true, anotherUserIndex: diedUserIndex, isAggresiveAction: true, murdersNumber: user.murdersNumber + 1 };
-                    }
+                    let diedUserIndex = result;
+                    let diedUser = props.usersList[diedUserIndex].name;
+                    return aggresiveActionSelector(stateBattle.actionType, user, diedUser, diedUserIndex)
                 } else {
-                    let aloneActionNumber;
-                    if (stateBattle.actionType === 'standart') {
-                        aloneActionNumber = Math.floor(Math.random() * (aloneAction.caseLength));
-                        return { text: aloneAction(aloneActionNumber, user.name), isAlive: true, murdersNumber: user.murdersNumber };
-                    } else {
-                        aloneActionNumber = Math.floor(Math.random() * (aloneFloodAction.caseLength));
-                        return { text: aloneFloodAction(aloneActionNumber, user.name), isAlive: true, murdersNumber: user.murdersNumber };
-                    }
+                    return aloneActionSelector(stateBattle.actionType, user);
                 }
             default:
         }
     }
 
     function getSpecialDay() {
-        if (Math.floor(Math.random() * 10) === 9) { // 10% шанса
+        if (getRandonNumber(10) === 9) { // 10% шанса
             return true;
         } else return false;
     }
@@ -194,6 +150,7 @@ function Game(props) {
             action: dayStatusList[statusNumber].action,
             actionType: dayStatusList[statusNumber].actionType
         });
+        // addStatuses();
         if ((props.usersList.filter((user) => user.isAlive == true)).length <= 1) {
             props.endGame();
         }

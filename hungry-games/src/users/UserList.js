@@ -4,35 +4,35 @@ import React, { useState, useEffect } from 'react';
 // let obj = { img: 'src', name: 'str', gender: 'srt', friend: 'name' }
 
 function UserList(props) {
-  const [users, setUsers] = useState(props.usersList);
   const [isShowForm, setShowForm] = useState(false);
+
   useEffect(() => {
 
   });
 
   function renderUsers() {
-    return users.map((user) =>
-      <UserItem userData={user} users={users} removeUserByIndex={removeUserByIndex}></UserItem>
+    return props.usersList.map((user) =>
+      <UserItem userData={user} users={props.usersList} removeUserByIndex={removeUserByIndex}></UserItem>
     );
   }
 
   function removeUserByIndex(index) {
-    const newArray = [...users];
+    const newArray = [...props.usersList];
     newArray.splice(index, 1);
-    setUsers(newArray);
+    props.setUsersList(newArray);
   }
 
   function clearUserList() {
-    setUsers([]);
+    props.setUsersList([]);
   }
 
 
   function addUser(userObject) {
-    let checkName = users.filter((user) => user.name == userObject.name);
+    let checkName = props.usersList.filter((user) => user.name == userObject.name);
     if (checkName.length > 0) {
       props.setHelpText("Персонаж с таким именем уже есть");
     } else {
-      setUsers((prev) => [
+      props.setUsersList((prev) => [
         ...prev,
         {
           'name': userObject.name,
@@ -54,8 +54,8 @@ function UserList(props) {
     setShowForm(false);
   }
 
-  function startGame(users) {
-    props.startGame(users);
+  function startGame() {
+    props.startGame();
   }
 
 
@@ -67,7 +67,7 @@ function UserList(props) {
       </div>
       {!isShowForm && <button onClick={() => { setShowForm(true) }}>Добавить участника</button>}
       {!isShowForm && <button onClick={() => { clearUserList() }}>Удалить всех</button>}
-      <button onClick={() => { startGame(users) }}>Начать игру</button>
+      <button onClick={() => { startGame() }}>Начать игру</button>
       <button className="about-button" onClick={() => { props.setAppState("about"); props.setHelpText('') }}>Информация</button>
     </div>
 

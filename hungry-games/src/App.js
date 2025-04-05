@@ -1,5 +1,5 @@
 import './App.css';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import UserList from './users/UserList';
 import Game from './game/Game';
 import End from './end/End';
@@ -12,10 +12,13 @@ function App() {
   const [postGameList, setPostGameList] = useState([]);
   const [helpText, setHelpText] = useState("");
 
-  function startGame(list) {
-    setUsersList(list);
- 
-    if (list.length > 1) {
+  useEffect(() => {
+    console.log(usersList);
+  }, [usersList])
+
+
+  function startGame() {
+    if (usersList.length > 1) {
       setAppState('game');
       setHelpText('');
     } else {
@@ -36,6 +39,7 @@ function App() {
       user.statusText = "Осматривается";
       user.isfinallyMovedFromGame = false;
       user.murdersNumber = 0;
+      user.secondUser = null;
     })
     setUsersList(oldArrUserList);
     setAppState("settings");
@@ -47,6 +51,7 @@ function App() {
       {appState === 'settings' && <UserList
         startGame={startGame}
         usersList={usersList}
+        setUsersList={setUsersList}
         setHelpText={setHelpText}
         setAppState={setAppState} />}
       {appState === 'game' && <Game
