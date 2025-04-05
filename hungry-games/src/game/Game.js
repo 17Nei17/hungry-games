@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import JsxParser from 'react-jsx-parser';
-import IdleAction from "./action/idleAction"
-import suicideAction from "./action/suicideAction"
-import dayStatusList from "./action/dayStatusList"
-import friendlyAction from "./action/friendlyAction"
-import AggresiveAction from "./action/AggresiveAction"
-import aloneAction from "./action/aloneAction"
-import shuffleArr from "./action/shuffleArr"
+import IdleAction from "./standart-action/idleAction"
+import suicideAction from "./standart-action/suicideAction"
+import dayStatusList from "./helpers/dayStatusList"
+import friendlyAction from "./standart-action/friendlyAction"
+import AggresiveAction from "./standart-action/AggresiveAction"
+import aloneAction from "./standart-action/aloneAction"
+import shuffleArr from "./helpers/shuffleArr"
+import GameRender from "./GameRender.js"
 
 
 function Game(props) {
@@ -123,9 +124,7 @@ function Game(props) {
                     return { text: aloneAction(aloneActionNumber, user.name), isAlive: true, murdersNumber: user.murdersNumber };
                 }
             default:
-
         }
-
     }
 
 
@@ -133,64 +132,23 @@ function Game(props) {
         clearStatuses();
         let statusNumber = Math.floor(Math.random() * dayStatusList.length);
         let newDay = stateBattle.time === "Ночь" ? stateBattle.day + 1 : stateBattle.day;
-        let newTime = stateBattle.time === "Ночь" ? 'День' : "Ночь";
-        setStateBattle({ day: newDay, time: newTime, action: dayStatusList[statusNumber].status });
+        setStateBattle({ day: newDay, time: stateBattle.time === "Ночь" ? 'День' : "Ночь", action: dayStatusList[statusNumber].status });
         if ((props.usersList.filter((user) => user.isAlive == true)).length <= 1) {
             props.endGame();
         }
-
         addStatuses();
     }
 
-    function renderParty() {
-        return props.usersList.map((user, index) => {
-            if (user.secondUser) {
-                return (
-                    <div className='cornflowerblue'>
-                        <div className='userItem-wrap'>
-                            <div className={(user.isAlive ? 'alive' : 'dead') + ' userItem'}>
-                                <div className="userName">{user.name}</div>
-                                <img className="userImage" src={user.img} />
-                                <div className="userName">{user.isAlive ? 'живой' : 'мертв'}</div>
-                                {/* <div>isUsed={user.isUsed.toString()}</div>
-                                <div>isfinallyMovedFromGame = {user.isfinallyMovedFromGame.toString()}</div> */}
-                            </div>
-                            <div className={(user.secondUser.isAlive ? 'alive' : 'dead') + " userItem"}>
-                                <div className="userName">{user.secondUser.name}</div>
-                                <img className="userImage" src={user.secondUser.img} />
-                                <div className="userName">{user.secondUser.isAlive ? 'живой' : 'мертв'}</div>
-                                {/* <div>isUsed={user.secondUser.isUsed.toString()}</div>
-                                <div>isfinallyMovedFromGame = {user.secondUser.isfinallyMovedFromGame.toString()}</div> */}
-                            </div>
-                        </div>
-                        <div><JsxParser jsx={user.statusText} /></div>
-                    </div>)
-
-            } else {
-                let additionalClass = user.isAlive ? ' alive' : ' dead';
-                return <div className={user.isUsed ? 'userItem hidden' : 'userItem' + (user.isfinallyMovedFromGame ? ' ordered' : '') + additionalClass}>
-                    <div className="userName">{user.name}</div>
-                    {/* <div>isUsed={user.isUsed.toString()}</div> */}
-                    <img className="userImage" src={user.img} />
-                    {user.secondUser && <img className="userImage" src={user.secondUser.img} />}
-
-                    <div className="userName">{user.isAlive ? 'живой' : 'мертв'}</div>
-                    <div><JsxParser jsx={user.statusText} /></div>
-                    {/* <div>isfinallyMovedFromGame = {user.isfinallyMovedFromGame.toString()}</div> */}
-                </div>
-            }
-        }
-
-        );
-    }
+ 
 
     return (
-        <div className="">
-            <div>{stateBattle.time} - {stateBattle.day}</div>
-            <div>{stateBattle.action}</div>
-            <div className="userlist">{renderParty()}</div>
-            <button onClick={() => { nextDay() }}>Дальше</button>
-        </div>
+        <GameRender stateBattle={stateBattle} nextDay={nextDay} usersList={props.usersList}></GameRender>
+        // <div className="">
+        //     <div>{stateBattle.time} - {stateBattle.day}</div>
+        //     <div>{stateBattle.action}</div>
+        //     <div className="userlist">{renderParty()}</div>
+        //     <button onClick={() => { nextDay() }}>Дальше</button>
+        // </div>
     );
 }
 
