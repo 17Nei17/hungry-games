@@ -5,12 +5,14 @@ import Game from './game/Game';
 import End from './end/End';
 import About from "./about/About"
 
+let version = 'ver 1.0.0';
 
 function App() {
   const [appState, setAppState] = useState('settings');
   const [usersList, setUsersList] = useState([]);
   const [postGameList, setPostGameList] = useState([]);
   const [helpText, setHelpText] = useState("");
+  const [actionSettings, setActionSettings] = useState("DEFAULT");
 
   useEffect(() => {
     console.log(usersList);
@@ -47,6 +49,8 @@ function App() {
 
   return (
     <div className="App">
+      <div className="info-text">{version}</div>
+      <div className="info-text">Набор действий - {actionSettings}</div>
       <div className="info-text">{helpText}</div>
       {appState === 'settings' && <UserList
         startGame={startGame}
