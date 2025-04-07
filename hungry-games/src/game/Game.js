@@ -5,7 +5,7 @@ import GameRender from "./GameRender.js"
 import dayStatusList from "./helpers/dayStatusList"
 import getRandonNumber from './helpers/getRandonNumber.js';
 
-import IdleAction from "./standart-action/idleAction"
+import IdleAction from "./actions/standart-action/idleAction.js"
 
 import suicideActionSelector from './actionSelectors/suicideActionSelector.js'
 import friendlyActionSelector from './actionSelectors/friendlyActionSelector.js'
@@ -66,8 +66,6 @@ function Game(props) {
         })
         newArray = shuffleArr(newArray)
         props.setUsersList(newArray);
-        // console.log('addStatuses')
-        // console.log(props.usersList)
     }
 
     function clearStatuses() {
@@ -131,18 +129,14 @@ function Game(props) {
 
     function getSpecialDay() {
         if (getRandonNumber(10) === 9) { // 10% шанса
-            return true;
-        } else return false;
+            return getRandonNumber(dayStatusList.length - 1); // потом переписать на нормальное
+        } else return 0;
     }
 
 
     function nextDay() {
         clearStatuses();
-        let isSpecialDay = getSpecialDay();
-        let statusNumber;
-        isSpecialDay && (statusNumber = 1);
-        !isSpecialDay && (statusNumber = 0);
-        // let statusNumber = Math.floor(Math.random() * dayStatusList.length);
+        let statusNumber = getSpecialDay();
         let newDay = stateBattle.time === "Ночь" ? stateBattle.day + 1 : stateBattle.day;
         setStateBattle({
             day: newDay,
