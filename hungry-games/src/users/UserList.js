@@ -1,19 +1,21 @@
-import UserItem from "./UserItem"
-import AddUserForm from "./AddUserForm"
-import React, { useState, useEffect } from 'react';
+import UserItem from "./UserItem";
+import AddUserForm from "./AddUserForm";
+import React, { useState, useEffect } from "react";
 // let obj = { img: 'src', name: 'str', gender: 'srt', friend: 'name' }
 
 function UserList(props) {
   const [isShowForm, setShowForm] = useState(false);
 
-  useEffect(() => {
-
-  });
+  useEffect(() => {});
 
   function renderUsers() {
-    return props.usersList.map((user) =>
-      <UserItem userData={user} users={props.usersList} removeUserByIndex={removeUserByIndex}></UserItem>
-    );
+    return props.usersList.map((user) => (
+      <UserItem
+        userData={user}
+        users={props.usersList}
+        removeUserByIndex={removeUserByIndex}
+      ></UserItem>
+    ));
   }
 
   function removeUserByIndex(index) {
@@ -26,25 +28,26 @@ function UserList(props) {
     props.setUsersList([]);
   }
 
-
   function addUser(userObject) {
-    let checkName = props.usersList.filter((user) => user.name == userObject.name);
+    let checkName = props.usersList.filter(
+      (user) => user.name == userObject.name
+    );
     if (checkName.length > 0) {
       props.setHelpText("Персонаж с таким именем уже есть");
     } else {
       props.setUsersList((prev) => [
         ...prev,
         {
-          'name': userObject.name,
-          'isUsed': false,
-          'img': userObject.img,
-          'gender': userObject.gender,
-          'friend': userObject.friend,
-          'isAlive': true,
-          'statusText': "Осматривается",
-          'isfinallyMovedFromGame': false,
-          'murdersNumber': 0,
-        }
+          name: userObject.name,
+          isUsed: false,
+          img: userObject.img,
+          gender: userObject.gender,
+          friend: userObject.friend,
+          isAlive: true,
+          statusText: "Осматривается",
+          isfinallyMovedFromGame: false,
+          murdersNumber: 0,
+        },
       ]);
       props.setHelpText("");
     }
@@ -58,19 +61,47 @@ function UserList(props) {
     props.startGame();
   }
 
-
   return (
     <div className="centered">
-      {isShowForm && <AddUserForm addUser={addUser} settings={settings}></AddUserForm>}
-      <div className="userlistBeforeGame">
-        {renderUsers()}
-      </div>
-      {!isShowForm && <button onClick={() => { setShowForm(true) }}>Добавить участника</button>}
-      {!isShowForm && <button onClick={() => { clearUserList() }}>Удалить всех</button>}
-      <button onClick={() => { startGame() }}>Начать игру</button>
-      <button className="about-button" onClick={() => { props.setAppState("about"); props.setHelpText('') }}>Информация</button>
+      {isShowForm && (
+        <AddUserForm addUser={addUser} settings={settings}></AddUserForm>
+      )}
+      <div className="userlistBeforeGame">{renderUsers()}</div>
+      {!isShowForm && (
+        <button
+          onClick={() => {
+            setShowForm(true);
+          }}
+        >
+          Добавить участника
+        </button>
+      )}
+      {!isShowForm && (
+        <button
+          onClick={() => {
+            clearUserList();
+          }}
+        >
+          Удалить всех
+        </button>
+      )}
+      <button
+        onClick={() => {
+          startGame();
+        }}
+      >
+        Начать игру
+      </button>
+      <button
+        className="about-button"
+        onClick={() => {
+          props.setAppState("about");
+          props.setHelpText("");
+        }}
+      >
+        Информация
+      </button>
     </div>
-
   );
 }
 
