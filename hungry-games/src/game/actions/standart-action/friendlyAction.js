@@ -14,6 +14,9 @@ function friendlyAction(number = 0, name1 = "", name2 = "") {
     `<span class='member-name'>${name1}</span> легонько кусает <span class='member-name'>${name2}</span>`,
     `<span class='member-name'>${name1}</span> рассказывает <span class='member-name'>${name2}</span> о назначении разных трав`,
     `<span class='member-name'>${name1}</span> гладит <span class='member-name'>${name2}</span> по голове`,
+    `<span class='member-name'>${name1}</span> аккуратно прикрывает <span class='member-name'>${name2}</span> листьями, чтобы тот не мёрз`,
+    `<span class='member-name'>${name1}</span> умывает <span class='member-name'>${name2}</span>, как заботливая мама`,
+    `<span class='member-name'>${name1}</span> слушает рассказы <span class='member-name'>${name2}</span> с искренним интересом и блестящими глазами`,
   ];
   return friendlyActionArr[number];
 }

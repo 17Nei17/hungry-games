@@ -11,6 +11,10 @@ function suicideAction(number = 0, name1 = "") {
     `<span class='member-name'>${name1}</span> наступил на смертельно ядовитое растение`,
     `<span class='member-name'>${name1}</span> не заметил, как дичь во рту превратилась в падаль и съел её. Трапеза оказалась последней`,
     `<span class='member-name'>${name1}</span> понял, что он одинок и совершил самоубийство от горя`,
+    `<span class='member-name'>${name1}</span> не заметил капкан и не дожил до рассвета`,
+    `<span class='member-name'>${name1}</span> пошёл за дичью и не вернулся — следы оборвались на краю обрыва`,
+    `<span class='member-name'>${name1}</span> погиб от удара молнии`,
+    `<span class='member-name'>${name1}</span> погиб, провалившись в болото`,
   ];
   return suicideActionArr[number];
 }

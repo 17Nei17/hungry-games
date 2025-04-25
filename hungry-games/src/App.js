@@ -5,7 +5,7 @@ import Game from "./game/Game";
 import End from "./end/End";
 import About from "./about/About";
 
-let version = "ver 1.0.0";
+let version = "ver 1.0.1";
 
 function App() {
   const [appState, setAppState] = useState("settings");

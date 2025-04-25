@@ -50,6 +50,7 @@ function Game(props) {
             let postGameNew = props.postGameList;
             postGameNew.unshift({
               name: user.name,
+              img: user.img,
               murdersNumber: newInfo.murdersNumber,
             });
             props.setPostGameList(postGameNew);
@@ -67,6 +68,7 @@ function Game(props) {
               let postGameNew = props.postGameList;
               postGameNew.unshift({
                 name: newArray[newInfo.anotherUserIndex].name,
+                img: newArray[newInfo.anotherUserIndex].img,
                 murdersNumber: newArray[newInfo.anotherUserIndex].murdersNumber,
               });
               props.setPostGameList(postGameNew);

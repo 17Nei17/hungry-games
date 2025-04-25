@@ -28,6 +28,7 @@ function End(props) {
       <div className="userItem">
         <div className="member-name">{user.name}</div>
         <div>Место:{index + 2}</div>
+        <img className="userImage" src={user.img} />
         <div>Количество убийств - {user.murdersNumber}</div>
       </div>
     ));
