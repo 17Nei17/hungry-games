@@ -163,7 +163,7 @@ function Game(props) {
   function getSpecialDay() {
     if (getRandonNumber(10) === 9) {
       // 10% шанса
-      return getRandonNumber(dayStatusList.length - 1); // потом переписать на нормальное
+      return getRandonNumber(dayStatusList.length + 1); // потом переписать на нормальное
     } else return 0;
   }
 
