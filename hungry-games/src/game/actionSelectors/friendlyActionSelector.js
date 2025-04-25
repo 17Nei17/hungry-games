@@ -1,13 +1,16 @@
 import friendlyFloodAction from "../actions/flood-action/friendlyFloodAction.js";
-import friendlyAction from "../actions/standart-action/friendlyAction.js";
+import friendlyActionDAY from "../actions/standart-action/day/friendlyActionDAY.js";
+import friendlyActionNIGHT from "../actions/standart-action/night/friendlyActionNIGHT.js"
 import friendlyFiredAction from "../actions/fire-action/friendlyFireAction.js";
 import getRandonNumber from "../helpers/getRandonNumber.js";
+import { DAY } from '../helpers/constants.js';
 
 function friendlyActionSelector(
   actionType,
   user,
   secondName,
-  anotherUserIndex
+  anotherUserIndex,
+  time
 ) {
   switch (actionType) {
     case "flood":
@@ -33,16 +36,32 @@ function friendlyActionSelector(
         murdersNumber: user.murdersNumber,
       };
     default:
-      return {
-        text: friendlyAction(
-          getRandonNumber(friendlyAction.caseLength),
-          user.name,
-          secondName
-        ),
-        isAlive: true,
-        anotherUserIndex: anotherUserIndex,
-        murdersNumber: user.murdersNumber,
-      };
+      if (time == DAY) {
+        return {
+          text: friendlyActionDAY(
+            getRandonNumber(friendlyActionDAY.caseLength),
+            user.name,
+            secondName,
+            time
+          ),
+          isAlive: true,
+          anotherUserIndex: anotherUserIndex,
+          murdersNumber: user.murdersNumber,
+        };
+      } else {
+        return {
+          text: friendlyActionNIGHT(
+            getRandonNumber(friendlyActionNIGHT.caseLength),
+            user.name,
+            secondName,
+            time
+          ),
+          isAlive: true,
+          anotherUserIndex: anotherUserIndex,
+          murdersNumber: user.murdersNumber,
+        };
+      }
+
   }
 }
 

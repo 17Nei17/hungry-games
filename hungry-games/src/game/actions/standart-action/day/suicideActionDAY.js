@@ -1,5 +1,5 @@
 let suicideActionArr = [];
-function suicideAction(number = 0, name1 = "") {
+function suicideActionDAY(number = 0, name1 = "") {
   suicideActionArr = [
     `<span class='member-name'>${name1}</span> умер от истощения`,
     `<span class='member-name'>${name1}</span> умер от кринжа`,
@@ -19,8 +19,8 @@ function suicideAction(number = 0, name1 = "") {
   return suicideActionArr[number];
 }
 
-suicideAction();
+suicideActionDAY();
 
-suicideAction.caseLength = suicideActionArr.length;
+suicideActionDAY.caseLength = suicideActionArr.length;
 
-export default suicideAction;
+export default suicideActionDAY;

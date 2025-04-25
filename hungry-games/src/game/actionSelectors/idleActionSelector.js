@@ -1,9 +1,11 @@
-import IdleAction from "../actions/standart-action/idleAction.js";
+import idleActionDAY from "../actions/standart-action/day/idleActionDAY.js";
+import idleActionNIGHT from "../actions/standart-action/night/idleActionNIGHT.js"
 import IdleFloodAction from "../actions/flood-action/idleFloodAction.js";
 import idleFireAction from "../actions/fire-action/idleFireAction.js";
 import getRandonNumber from "../helpers/getRandonNumber.js";
+import { DAY } from '../helpers/constants.js';
 
-function idleActionSelector(actionType, user) {
+function idleActionSelector(actionType, user, time) {
   switch (actionType) {
     case "flood":
       return {
@@ -24,11 +26,20 @@ function idleActionSelector(actionType, user) {
         murdersNumber: user.murdersNumber,
       };
     default:
-      return {
-        text: IdleAction(getRandonNumber(IdleAction.caseLength), user.name),
-        isAlive: true,
-        murdersNumber: user.murdersNumber,
-      };
+      if (time == DAY) {
+        return {
+          text: idleActionDAY(getRandonNumber(idleActionDAY.caseLength), user.name),
+          isAlive: true,
+          murdersNumber: user.murdersNumber,
+        };
+      } else {
+        return {
+          text: idleActionNIGHT(getRandonNumber(idleActionNIGHT.caseLength), user.name),
+          isAlive: true,
+          murdersNumber: user.murdersNumber,
+        };
+      }
+
   }
 }
 

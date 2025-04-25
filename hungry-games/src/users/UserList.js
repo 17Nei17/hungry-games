@@ -1,12 +1,14 @@
 import UserItem from "./UserItem";
 import AddUserForm from "./AddUserForm";
 import React, { useState, useEffect } from "react";
+import startGameAction from "../game/actions/start-game-action/startGameAction";
+import getRandonNumber from "../game/helpers/getRandonNumber";
 // let obj = { img: 'src', name: 'str', gender: 'srt', friend: 'name' }
 
 function UserList(props) {
   const [isShowForm, setShowForm] = useState(false);
 
-  useEffect(() => {});
+  useEffect(() => { });
 
   function renderUsers() {
     return props.usersList.map((user) => (
@@ -44,7 +46,7 @@ function UserList(props) {
           gender: userObject.gender,
           friend: userObject.friend,
           isAlive: true,
-          statusText: "Осматривается",
+          statusText: startGameAction(getRandonNumber(startGameAction.caseLength)),
           isfinallyMovedFromGame: false,
           murdersNumber: 0,
         },

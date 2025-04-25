@@ -1,6 +1,6 @@
 let idleActionArr = [];
 
-function idleAction(number = 0, name1 = "") {
+function idleActionDAY(number = 0, name1 = "") {
   idleActionArr = [
     `<span class='member-name'>${name1}</span> тупит и ничего не делает`,
     `<span class='member-name'>${name1}</span> бродит в окрестностях`,
@@ -40,15 +40,14 @@ function idleAction(number = 0, name1 = "") {
     `<span class='member-name'>${name1}</span> роет ямку для хранения запасов, а потом забывает, где она`,
     `<span class='member-name'>${name1}</span> пьёт из лужи и молится, чтобы это была просто лужа`,
     `<span class='member-name'>${name1}</span> зализывает раны, оставленные бурей и собственной глупостью`,
-    `<span class='member-name'>${name1}</span> спит стоя, чтобы не замёрзнуть на мокрой земле`,
     `<span class='member-name'>${name1}</span> обвязывает рану паутиной, бросив последний взгляд на закат`
   ];
 
   return idleActionArr[number];
 }
 
-idleAction();
+idleActionDAY();
 
-idleAction.caseLength = idleActionArr.length;
+idleActionDAY.caseLength = idleActionArr.length;
 
-export default idleAction;
+export default idleActionDAY;

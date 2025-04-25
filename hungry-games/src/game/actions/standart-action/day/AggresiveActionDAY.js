@@ -1,6 +1,6 @@
 let AggresiveActionArr = [];
 
-function AggresiveAction(number = 0, name1 = "", name2 = "") {
+function AggresiveActionDAY(number = 0, name1 = "", name2 = "") {
   AggresiveActionArr = [
     `<span class='member-name'>${name1}</span> нападает на <span class='member-name'>${name2}</span> и убивает его`,
     `<span class='member-name'>${name1}</span> подложил <span class='member-name'>${name2}</span> дичь со смертельной отравой`,
@@ -17,8 +17,8 @@ function AggresiveAction(number = 0, name1 = "", name2 = "") {
   return AggresiveActionArr[number];
 }
 
-AggresiveAction();
+AggresiveActionDAY();
 
-AggresiveAction.caseLength = AggresiveActionArr.length;
+AggresiveActionDAY.caseLength = AggresiveActionArr.length;
 
-export default AggresiveAction;
+export default AggresiveActionDAY;

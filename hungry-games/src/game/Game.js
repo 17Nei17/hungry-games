@@ -5,19 +5,22 @@ import GameRender from "./GameRender.js";
 import dayStatusList from "./helpers/dayStatusList";
 import getRandonNumber from "./helpers/getRandonNumber.js";
 
-import IdleAction from "./actions/standart-action/idleAction.js";
+import IdleAction from "./actions/standart-action/day/idleActionDAY.js";
 
 import suicideActionSelector from "./actionSelectors/suicideActionSelector.js";
 import friendlyActionSelector from "./actionSelectors/friendlyActionSelector.js";
 import aloneActionSelector from "./actionSelectors/aloneActionSelector.js";
 import idleActionSelector from "./actionSelectors/idleActionSelector.js";
 import aggresiveActionSelector from "./actionSelectors/aggresiveActionSelector.js";
+import { DAY } from './helpers/constants.js'
+import { NIGHT } from './helpers/constants.js'
+
 
 function Game(props) {
   const [stateBattle, setStateBattle] = useState({
     day: 1,
     action: "Начало первого дня",
-    time: "День",
+    time: DAY,
     actionType: "standart",
   });
 
@@ -119,10 +122,10 @@ function Game(props) {
     switch (action) {
       case "suicide":
         // suicide
-        return suicideActionSelector(stateBattle.actionType, user);
+        return suicideActionSelector(stateBattle.actionType, user, stateBattle.time);
       case "idle":
         // idle
-        return idleActionSelector(stateBattle.actionType, user);
+        return idleActionSelector(stateBattle.actionType, user, stateBattle.time);
       case "friendly":
         // friendly
         if (result !== -1) {
@@ -132,10 +135,11 @@ function Game(props) {
             stateBattle.actionType,
             user,
             secondName,
-            anotherUserIndex
+            anotherUserIndex,
+            stateBattle.time
           );
         } else {
-          return aloneActionSelector(stateBattle.actionType, user);
+          return aloneActionSelector(stateBattle.actionType, user, stateBattle.time);
         }
       case "aggresive":
         // aggresive
@@ -146,10 +150,11 @@ function Game(props) {
             stateBattle.actionType,
             user,
             diedUser,
-            diedUserIndex
+            diedUserIndex,
+            stateBattle.time
           );
         } else {
-          return aloneActionSelector(stateBattle.actionType, user);
+          return aloneActionSelector(stateBattle.actionType, user, stateBattle.time);
         }
       default:
     }
@@ -166,10 +171,10 @@ function Game(props) {
     clearStatuses();
     let statusNumber = getSpecialDay();
     let newDay =
-      stateBattle.time === "Ночь" ? stateBattle.day + 1 : stateBattle.day;
+      stateBattle.time === NIGHT ? stateBattle.day + 1 : stateBattle.day;
     setStateBattle({
       day: newDay,
-      time: stateBattle.time === "Ночь" ? "День" : "Ночь",
+      time: stateBattle.time === NIGHT ? DAY : NIGHT,
       action: dayStatusList[statusNumber].action,
       actionType: dayStatusList[statusNumber].actionType,
     });
