@@ -8,6 +8,9 @@ function aloneActionDAY(number = 0, name1 = "") {
     `<span class='member-name'>${name1}</span> спорит с камнем, и камень, кажется, выигрывает`,
     `<span class='member-name'>${name1}</span> смотрит в небо и делает вид, что дождь — это не слёзы`,
     `<span class='member-name'>${name1}</span> шепчет себе "я молодец"`,
+    `<span class='member-name'>${name1}</span> чистит свой нож, задумчиво глядя в даль`,
+    `<span class='member-name'>${name1}</span> ставит самодельную ловушку, используя пружину от старого ружья`
+
   ];
   return aloneActionArr[number];
 }

@@ -13,7 +13,11 @@ function friendlyActionNIGHT(number = 0, name1 = "", name2 = "") {
     `<span class='member-name'>${name1}</span> и <span class='member-name'>${name2}</span> прячутся под навесом из веток, слушая, как вдалеке умирают другие`,
     `<span class='member-name'>${name1}</span> и <span class='member-name'>${name2}</span> смотрят на звёзды, каждый думая, кто из них умрёт первым`,
     `<span class='member-name'>${name1}</span> прижимает <span class='member-name'>${name2}</span> к себе, как если бы это был их последний вечер`,
-    `<span class='member-name'>${name1}</span> молча отдаёт свой тайник с травами <span class='member-name'>${name2}</span>, даже не взглянув назад`
+    `<span class='member-name'>${name1}</span> молча отдаёт свой тайник с травами <span class='member-name'>${name2}</span>, даже не взглянув назад`,
+    `<span class='member-name'>${name1}</span> остаётся рядом с <span class='member-name'>${name2}</span>, чтобы не дать ему сдаться`,
+    `<span class='member-name'>${name1}</span> шепчет: «Ты в безопасности», обнимая <span class='member-name'>${name2}</span> у костра`,
+    `<span class='member-name'>${name1}</span> внимательно следит за тем, чтобы <span class='member-name'>${name2}</span> спал спокойно`,
+    `<span class='member-name'>${name1}</span> подоткнул одеяло <span class='member-name'>${name2}</span> и поцеловал в лоб`
   ];
   return friendlyActionArr[number];
 }
