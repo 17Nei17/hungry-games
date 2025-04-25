@@ -12,6 +12,8 @@ import friendlyActionSelector from "./actionSelectors/friendlyActionSelector.js"
 import aloneActionSelector from "./actionSelectors/aloneActionSelector.js";
 import idleActionSelector from "./actionSelectors/idleActionSelector.js";
 import aggresiveActionSelector from "./actionSelectors/aggresiveActionSelector.js";
+import groupActionSelector from './actionSelectors/groupActionSelector.js'
+
 import { DAY } from './helpers/constants.js'
 import { NIGHT } from './helpers/constants.js'
 
@@ -24,6 +26,7 @@ function Game(props) {
     actionType: "standart",
   });
 
+
   // useEffect(() => {
   //     clearStatuses();
   // }, [0])
@@ -31,6 +34,7 @@ function Game(props) {
   useEffect(() => {
     if (stateBattle.action !== "Начало первого дня") {
       addStatuses();
+      props.setdayTime(stateBattle.time);
     }
   }, [stateBattle]);
 
@@ -119,6 +123,18 @@ function Game(props) {
         !item.isSettedStatus &&
         !item.isUsed
     );
+    // let result2;
+    // if (result) {
+    //   console.log(props.usersList[result].name)
+    //   result2 = newArray.findIndex(
+    //     (item) =>
+    //       item.name !== user.name && user.name !== props.usersList[result].name &&
+    //       item.isAlive &&
+    //       !item.isSettedStatus &&
+    //       !item.isUsed
+    //   );
+    // }
+
     switch (action) {
       case "suicide":
         // suicide
@@ -156,6 +172,25 @@ function Game(props) {
         } else {
           return aloneActionSelector(stateBattle.actionType, user, stateBattle.time);
         }
+      case "group":
+        // group
+        // if (result !== -1 && result2 !== -1) {
+        //   let anotherUserIndex = result2;
+        //   let secondName = props.usersList[anotherUserIndex].name;
+        //   let anotherUserIndex2 = result;
+        //   let secondName2 = props.usersList[anotherUserIndex2].name;
+        //   return groupActionSelector(
+        //     stateBattle.actionType,
+        //     user,
+        //     secondName,
+        //     secondName2,
+        //     anotherUserIndex,
+        //     anotherUserIndex2,
+        //     stateBattle.time
+        //   );
+        // } else {
+        //   return aloneActionSelector(stateBattle.actionType, user, stateBattle.time);
+        // }
       default:
     }
   }

@@ -6,10 +6,12 @@ import End from "./end/End";
 import About from "./about/About";
 import startGameAction from "./game/actions/start-game-action/startGameAction";
 import getRandonNumber from "./game/helpers/getRandonNumber";
+import { DAY } from './game/helpers/constants';
 
 let version = "ver 1.0.2";
 
 function App() {
+  const [dayTime, setdayTime] = useState("");
   const [appState, setAppState] = useState("settings");
   const [usersList, setUsersList] = useState([]);
   const [postGameList, setPostGameList] = useState([]);
@@ -49,10 +51,11 @@ function App() {
   }
 
   return (
-    <div className="App">
+    <div className={dayTime === DAY ? 'App day' : 'App night'}>
       <div className="info-text">{version}</div>
       <div className="info-text">Набор действий - {actionSettings}</div>
       <div className="info-text">{helpText}</div>
+
       {appState === "settings" && (
         <UserList
           startGame={startGame}
@@ -69,6 +72,7 @@ function App() {
           setUsersList={setUsersList}
           postGameList={postGameList}
           setPostGameList={setPostGameList}
+          setdayTime={setdayTime}
         />
       )}
       {appState === "end" && (

@@ -3,6 +3,16 @@
   background-color: steelblue;
 }
 
+.App.day {
+  text-align: center;
+  background-color: rgb(87, 160, 219);
+}
+
+.App.night {
+  text-align: center;
+  background-color: rgb(42, 78, 107);
+}
+
 .App-logo {
   height: 40vmin;
   pointer-events: none;
