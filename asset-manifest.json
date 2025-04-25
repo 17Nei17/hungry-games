@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/hungry-games/static/css/main.4608bab1.css",
-    "main.js": "/hungry-games/static/js/main.b523c427.js",
+    "main.js": "/hungry-games/static/js/main.c379aef9.js",
     "static/js/453.9e0338e4.chunk.js": "/hungry-games/static/js/453.9e0338e4.chunk.js",
     "index.html": "/hungry-games/index.html",
     "main.4608bab1.css.map": "/hungry-games/static/css/main.4608bab1.css.map",
-    "main.b523c427.js.map": "/hungry-games/static/js/main.b523c427.js.map",
+    "main.c379aef9.js.map": "/hungry-games/static/js/main.c379aef9.js.map",
     "453.9e0338e4.chunk.js.map": "/hungry-games/static/js/453.9e0338e4.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.4608bab1.css",
-    "static/js/main.b523c427.js"
+    "static/js/main.c379aef9.js"
   ]
 }
