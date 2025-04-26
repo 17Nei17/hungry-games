@@ -2,7 +2,7 @@ let suicideActionArr = [];
 function suicideActionNIGHT(number = 0, name1 = "") {
   suicideActionArr = [
     `<span class='member-name'>${name1}</span> замёрз под открытым небом`,
-    `<span class='member-name'>${name1}</span> не пережил кровопотерю до рассвета`,
+    `<span class='member-name'>${name1}</span> умер от кровопотери ночью`,
     `<span class='member-name'>${name1}</span> был унесён хищником в ночи`,
     `<span class='member-name'>${name1}</span> решил согреться у костра и заснул в углях`,
     `<span class='member-name'>${name1}</span> решил посмотреть, как далеко может зайти в болото. Зашёл и не вышел.`,
