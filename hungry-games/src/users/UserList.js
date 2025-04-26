@@ -49,6 +49,7 @@ function UserList(props) {
           statusText: startGameAction(getRandonNumber(startGameAction.caseLength)),
           isfinallyMovedFromGame: false,
           murdersNumber: 0,
+          secondUser: []
         },
       ]);
       props.setHelpText("");

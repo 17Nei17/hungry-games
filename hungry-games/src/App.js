@@ -8,7 +8,7 @@ import startGameAction from "./game/actions/start-game-action/startGameAction";
 import getRandonNumber from "./game/helpers/getRandonNumber";
 import { DAY } from './game/helpers/constants';
 
-let version = "ver 1.0.2";
+let version = "ver 1.0.3";
 
 function App() {
   const [dayTime, setdayTime] = useState("");
@@ -44,7 +44,7 @@ function App() {
       user.statusText = startGameAction(getRandonNumber(startGameAction.caseLength));
       user.isfinallyMovedFromGame = false;
       user.murdersNumber = 0;
-      user.secondUser = null;
+      user.secondUser = [];
     });
     setUsersList(oldArrUserList);
     setAppState("settings");

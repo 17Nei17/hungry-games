@@ -26,17 +26,46 @@ function Game(props) {
     actionType: "standart",
   });
 
-
-  // useEffect(() => {
-  //     clearStatuses();
-  // }, [0])
-
   useEffect(() => {
     if (stateBattle.action !== "Начало первого дня") {
       addStatuses();
       props.setdayTime(stateBattle.time);
     }
   }, [stateBattle]);
+
+  function setUsedUser(user, index, newInfo, newArray) {
+    newInfo = { text: IdleAction(0, user.name), isAlive: true };
+    newArray[index].statusText = newInfo.text;
+    newArray[index].isAlive = newInfo.isAlive;
+    newArray[index].isSettedStatus = true;
+    newArray[index].murdersNumber = user.murdersNumber;
+  }
+
+  function movedUserInPostGameList(user, newInfo) {
+    let postGameNew = props.postGameList;
+    postGameNew.unshift({
+      name: user.name,
+      img: user.img,
+      murdersNumber: newInfo.murdersNumber,
+    });
+    props.setPostGameList(postGameNew);
+  }
+
+  function setAggresive_FriendlyStatuses(index, newArray, newInfo) {
+    if (newInfo.anotherUserIndex2 !== undefined) {
+      newArray[index].secondUser = [newArray[newInfo.anotherUserIndex], newArray[newInfo.anotherUserIndex2]];
+      newArray[newInfo.anotherUserIndex2].isUsed = true;
+    }
+    else {
+      newArray[index].secondUser = [newArray[newInfo.anotherUserIndex]];
+    }
+    newArray[newInfo.anotherUserIndex].isUsed = true;
+    newArray[newInfo.anotherUserIndex].isAlive =
+      newInfo.isAggresiveAction ? false : true;
+    if (!newArray[newInfo.anotherUserIndex].isAlive) {
+      movedUserInPostGameList(newArray[newInfo.anotherUserIndex], newArray[newInfo.anotherUserIndex])
+    }
+  }
 
   function addStatuses() {
     let newArray = [...props.usersList];
@@ -45,41 +74,22 @@ function Game(props) {
         let newInfo;
         if (newArray[index].isUsed) {
           // идея в том, что использованные в доп действиях с кем-то должны получит скрытый идл и не рисоваться (это очень костыльно)
-          newInfo = { text: IdleAction(0, user.name), isAlive: true };
-          newArray[index].statusText = newInfo.text;
-          newArray[index].isAlive = newInfo.isAlive;
-          newArray[index].isSettedStatus = true;
-          newArray[index].murdersNumber = user.murdersNumber;
+          setUsedUser(user, index, newInfo, newArray);
         } else {
           // обычное назначение событий
           newInfo = setStatus(user, newArray);
           if (!newInfo.isAlive) {
-            let postGameNew = props.postGameList;
-            postGameNew.unshift({
-              name: user.name,
-              img: user.img,
-              murdersNumber: newInfo.murdersNumber,
-            });
-            props.setPostGameList(postGameNew);
+            movedUserInPostGameList(user, newInfo);
           }
           newArray[index].statusText = newInfo.text;
           newArray[index].isAlive = newInfo.isAlive;
           newArray[index].isSettedStatus = true;
           newArray[index].murdersNumber = newInfo.murdersNumber;
           if (newInfo.anotherUserIndex !== undefined) {
-            newArray[index].secondUser = newArray[newInfo.anotherUserIndex];
-            newArray[newInfo.anotherUserIndex].isUsed = true;
-            newArray[newInfo.anotherUserIndex].isAlive =
-              newInfo.isAggresiveAction ? false : true;
-            if (!newArray[newInfo.anotherUserIndex].isAlive) {
-              let postGameNew = props.postGameList;
-              postGameNew.unshift({
-                name: newArray[newInfo.anotherUserIndex].name,
-                img: newArray[newInfo.anotherUserIndex].img,
-                murdersNumber: newArray[newInfo.anotherUserIndex].murdersNumber,
-              });
-              props.setPostGameList(postGameNew);
-            }
+            setAggresive_FriendlyStatuses(index, newArray, newInfo);
+          }
+          if (newInfo.anotherUserIndex2 !== undefined) {
+            setAggresive_FriendlyStatuses(index, newArray, newInfo);
           }
         }
       }
@@ -95,7 +105,7 @@ function Game(props) {
       newArray[index].isUsed = false;
       if (newArray[index].isAlive) {
         newArray[index].statusText = null;
-        newArray[index].secondUser = null;
+        newArray[index].secondUser = [];
       } else {
         newArray[index].isfinallyMovedFromGame = true;
         newArray[index].statusText = "не участвует в битве";
@@ -108,12 +118,14 @@ function Game(props) {
     let action = getRandonNumber(100);
     if (action >= 0 && action <= 10) {
       action = "suicide";
-    } else if (action > 10 && action <= 50) {
+    } else if (action > 10 && action <= 45) {
       action = "idle";
-    } else if (action > 50 && action <= 80) {
+    } else if (action > 45 && action <= 75) {
       action = "friendly";
-    } else if (action > 80 && action <= 100) {
+    } else if (action > 75 && action <= 90) {
       action = "aggresive";
+    } else if (action > 90 && action <= 100) {
+      action = "group";
     }
 
     const result = newArray.findIndex(
@@ -123,18 +135,16 @@ function Game(props) {
         !item.isSettedStatus &&
         !item.isUsed
     );
-    // let result2;
-    // if (result) {
-    //   console.log(props.usersList[result].name)
-    //   result2 = newArray.findIndex(
-    //     (item) =>
-    //       item.name !== user.name && user.name !== props.usersList[result].name &&
-    //       item.isAlive &&
-    //       !item.isSettedStatus &&
-    //       !item.isUsed
-    //   );
-    // }
-
+    let result2;
+    if (result !== -1) {
+      result2 = newArray.findIndex(
+        (item) =>
+          item.name !== user.name && item.name !== newArray[result].name &&
+          item.isAlive &&
+          !item.isSettedStatus &&
+          !item.isUsed
+      );
+    }
     switch (action) {
       case "suicide":
         // suicide
@@ -174,23 +184,23 @@ function Game(props) {
         }
       case "group":
         // group
-        // if (result !== -1 && result2 !== -1) {
-        //   let anotherUserIndex = result2;
-        //   let secondName = props.usersList[anotherUserIndex].name;
-        //   let anotherUserIndex2 = result;
-        //   let secondName2 = props.usersList[anotherUserIndex2].name;
-        //   return groupActionSelector(
-        //     stateBattle.actionType,
-        //     user,
-        //     secondName,
-        //     secondName2,
-        //     anotherUserIndex,
-        //     anotherUserIndex2,
-        //     stateBattle.time
-        //   );
-        // } else {
-        //   return aloneActionSelector(stateBattle.actionType, user, stateBattle.time);
-        // }
+        if (result !== -1 && result2 !== -1) {
+          let anotherUserIndex = result;
+          let secondName = props.usersList[anotherUserIndex].name;
+          let anotherUserIndex2 = result2;
+          let secondName2 = props.usersList[anotherUserIndex2].name;
+          return groupActionSelector(
+            stateBattle.actionType,
+            user,
+            secondName,
+            secondName2,
+            anotherUserIndex,
+            anotherUserIndex2,
+            stateBattle.time
+          );
+        } else {
+          return aloneActionSelector(stateBattle.actionType, user, stateBattle.time);
+        }
       default:
     }
   }
@@ -198,7 +208,7 @@ function Game(props) {
   function getSpecialDay() {
     if (getRandonNumber(10) === 9) {
       // 10% шанса
-      return getRandonNumber(dayStatusList.length + 1); // потом переписать на нормальное
+      return getRandonNumber(dayStatusList.length); // потом переписать на нормальное
     } else return 0;
   }
 

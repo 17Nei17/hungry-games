@@ -2,40 +2,40 @@ import React from "react";
 import JsxParser from "react-jsx-parser";
 
 function GameRender(props) {
+
+
+  function additionalUsersList(user) {
+    return user.secondUser.map((item) => (
+      <div className={(item.isAlive ? "alive" : "dead") + " userItem"}>
+        <div className="userName">{item.name}</div>
+        <img className="userImage" src={item.img} />
+        <div className="userName">{item.isAlive ? "живой" : "мертв"}</div>
+      </div>
+    ));
+  }
+
+  function renderGroupUsers(user) {
+    return (
+      <div className="cornflowerblue">
+        <div className="userItem-wrap">
+          <div className={(user.isAlive ? "alive" : "dead") + " userItem"}>
+            <div className="userName">{user.name}</div>
+            <img className="userImage" src={user.img} />
+            <div className="userName">{user.isAlive ? "живой" : "мертв"}</div>
+          </div>
+          {additionalUsersList(user)}
+        </div>
+        <div>
+          <JsxParser jsx={user.statusText} />
+        </div>
+      </div>
+    );
+  }
+
   function renderParty() {
     return props.usersList.map((user, index) => {
-      if (user.secondUser) {
-        return (
-          <div className="cornflowerblue">
-            <div className="userItem-wrap">
-              <div className={(user.isAlive ? "alive" : "dead") + " userItem"}>
-                <div className="userName">{user.name}</div>
-                <img className="userImage" src={user.img} />
-                <div className="userName">
-                  {user.isAlive ? "живой" : "мертв"}
-                </div>
-                {/* <div>isUsed={user.isUsed.toString()}</div>
-                                <div>isfinallyMovedFromGame = {user.isfinallyMovedFromGame.toString()}</div> */}
-              </div>
-              <div
-                className={
-                  (user.secondUser.isAlive ? "alive" : "dead") + " userItem"
-                }
-              >
-                <div className="userName">{user.secondUser.name}</div>
-                <img className="userImage" src={user.secondUser.img} />
-                <div className="userName">
-                  {user.secondUser.isAlive ? "живой" : "мертв"}
-                </div>
-                {/* <div>isUsed={user.secondUser.isUsed.toString()}</div>
-                                <div>isfinallyMovedFromGame = {user.secondUser.isfinallyMovedFromGame.toString()}</div> */}
-              </div>
-            </div>
-            <div>
-              <JsxParser jsx={user.statusText} />
-            </div>
-          </div>
-        );
+      if (user.secondUser.length > 0) {
+        return renderGroupUsers(user);
       } else {
         let additionalClass = user.isAlive ? " alive" : " dead";
         return (
@@ -44,12 +44,11 @@ function GameRender(props) {
               user.isUsed
                 ? "userItem hidden"
                 : "userItem" +
-                  (user.isfinallyMovedFromGame ? " ordered" : "") +
-                  additionalClass
+                (user.isfinallyMovedFromGame ? " ordered" : "") +
+                additionalClass
             }
           >
             <div className="userName">{user.name}</div>
-            {/* <div>isUsed={user.isUsed.toString()}</div> */}
             <img className="userImage" src={user.img} />
             {user.secondUser && (
               <img className="userImage" src={user.secondUser.img} />
@@ -59,7 +58,6 @@ function GameRender(props) {
             <div>
               <JsxParser jsx={user.statusText} />
             </div>
-            {/* <div>isfinallyMovedFromGame = {user.isfinallyMovedFromGame.toString()}</div> */}
           </div>
         );
       }
