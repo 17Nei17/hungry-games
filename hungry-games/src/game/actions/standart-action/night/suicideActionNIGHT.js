@@ -11,7 +11,7 @@ function suicideActionNIGHT(number = 0, name1 = "") {
     `<span class='member-name'>${name1}</span> не проснулся после укуса паука`,
     `<span class='member-name'>${name1}</span> последним усилием добрался до ручья — и упал в него лицом вниз`,
     `<span class='member-name'>${name1}</span> был найден мёртвым рядом с неподвижным котом цветом похожим на кирпич. Никто не понял, что произошло... но кот исчез`,
-    `<span class='member-name'>${name7}</span> нашёл записку: "Не смотри в глаза коту." Он посмотрел. Больше его не видели.`
+    `<span class='member-name'>${name1}</span> нашёл записку: "Не смотри в глаза коту." Он посмотрел. Больше его не видели.`
   ];
   return suicideActionArr[number];
 }

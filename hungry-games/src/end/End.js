@@ -11,7 +11,9 @@ function End(props) {
         <div>
           <span>В живых остался только:</span>
           <span className="member-name">{AliveObject[0].name}</span>
+          <div><img className="userImage" src={AliveObject[0].img} /></div>
           <div>Количество убийств - {AliveObject[0].murdersNumber}</div>
+
         </div>
       );
     } else {
