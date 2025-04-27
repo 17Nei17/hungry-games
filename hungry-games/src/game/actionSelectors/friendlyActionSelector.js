@@ -5,13 +5,8 @@ import friendlyFiredAction from "../actions/fire-action/friendlyFireAction.js";
 import getRandonNumber from "../helpers/getRandonNumber.js";
 import { DAY, FIRE, FLOOD } from "../helpers/constants.js";
 
-function friendlyActionSelector(
-  actionType,
-  user,
-  secondName,
-  anotherUserIndex,
-  time
-) {
+function friendlyActionSelector(arr, secondName, anotherUserIndex) {
+  let [actionType, user, time] = arr;
   let textMessage = "";
   switch (actionType) {
     case FLOOD:

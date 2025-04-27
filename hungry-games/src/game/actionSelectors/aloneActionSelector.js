@@ -5,7 +5,8 @@ import aloneFireAction from "../actions/fire-action/aloneFireAction.js";
 import getRandonNumber from "../helpers/getRandonNumber.js";
 import { DAY, FIRE, FLOOD } from "../helpers/constants.js";
 
-function aloneActionSelector(actionType, user, time) {
+function aloneActionSelector(arr) {
+  let [actionType, user, time] = arr;
   let textMessage = "";
   switch (actionType) {
     case FLOOD:

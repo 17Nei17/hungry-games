@@ -2,11 +2,9 @@ import React, { useState, useEffect } from "react";
 
 import shuffleArr from "./helpers/shuffleArr";
 import GameRender from "./GameRender.js";
-import DeadListRender from "./deadListRender.js";
+import DeadListRender from "../users/deadListRender.js";
 import dayStatusList from "./helpers/dayStatusList";
 import getRandonNumber from "./helpers/getRandonNumber.js";
-
-import IdleAction from "./actions/standart-action/day/idleActionDAY.js";
 
 import suicideActionSelector from "./actionSelectors/suicideActionSelector.js";
 import friendlyActionSelector from "./actionSelectors/friendlyActionSelector.js";
@@ -46,7 +44,7 @@ function Game(props) {
   }, [stateBattle]);
 
   function setUsedUser(user, index, newInfo, newArray) {
-    newInfo = { text: IdleAction(0, user.name), isAlive: true };
+    newInfo = { text: "used", isAlive: true };
     newArray[index].statusText = newInfo.text;
     newArray[index].isAlive = newInfo.isAlive;
     newArray[index].isSettedStatus = true;
@@ -145,6 +143,7 @@ function Game(props) {
 
   function setStatus(user, newArray) {
     let action = actionSelector(getRandonNumber(100));
+    let secondFreeСharacter;
     let freeСharacter = newArray.findIndex(
       (item) =>
         item.name !== user.name &&
@@ -152,93 +151,58 @@ function Game(props) {
         !item.isSettedStatus &&
         !item.isUsed
     );
-    let secondFreeСharacter;
     if (freeСharacter !== -1) {
       secondFreeСharacter = newArray.findIndex(
         (item) =>
-          item.name !== user.name &&
           item.name !== newArray[freeСharacter].name &&
+          item.name !== user.name &&
           item.isAlive &&
           !item.isSettedStatus &&
           !item.isUsed
       );
     }
-
+    let paramArr = [stateBattle.actionType, user, stateBattle.time];
     switch (action) {
       case SUICIDE:
         // suicide
-        return suicideActionSelector(
-          stateBattle.actionType,
-          user,
-          stateBattle.time
-        );
+        return suicideActionSelector(paramArr);
       case IDLE:
         // idle
-        return idleActionSelector(
-          stateBattle.actionType,
-          user,
-          stateBattle.time
-        );
+        return idleActionSelector(paramArr);
       case FRIENDLY:
         // friendly
         if (freeСharacter !== -1) {
-          let anotherUserIndex = freeСharacter;
-          let secondName = props.usersList[anotherUserIndex].name;
           return friendlyActionSelector(
-            stateBattle.actionType,
-            user,
-            secondName,
-            anotherUserIndex,
-            stateBattle.time
+            paramArr,
+            props.usersList[freeСharacter].name,
+            freeСharacter
           );
         } else {
-          return aloneActionSelector(
-            stateBattle.actionType,
-            user,
-            stateBattle.time
-          );
+          return aloneActionSelector(paramArr);
         }
       case AGGRESIVE:
         // aggresive
         if (freeСharacter !== -1) {
-          let diedUserIndex = freeСharacter;
-          let diedUser = props.usersList[diedUserIndex].name;
           return aggresiveActionSelector(
-            stateBattle.actionType,
-            user,
-            diedUser,
-            diedUserIndex,
-            stateBattle.time
+            paramArr,
+            props.usersList[freeСharacter].name,
+            freeСharacter
           );
         } else {
-          return aloneActionSelector(
-            stateBattle.actionType,
-            user,
-            stateBattle.time
-          );
+          return aloneActionSelector(paramArr);
         }
       case GROUP:
         // group
         if (freeСharacter !== -1 && secondFreeСharacter !== -1) {
-          let anotherUserIndex = freeСharacter;
-          let secondName = props.usersList[anotherUserIndex].name;
-          let anotherUserIndex2 = secondFreeСharacter;
-          let secondName2 = props.usersList[anotherUserIndex2].name;
           return groupActionSelector(
-            stateBattle.actionType,
-            user,
-            secondName,
-            secondName2,
-            anotherUserIndex,
-            anotherUserIndex2,
-            stateBattle.time
+            paramArr,
+            props.usersList[freeСharacter].name,
+            props.usersList[secondFreeСharacter].name,
+            freeСharacter,
+            secondFreeСharacter
           );
         } else {
-          return aloneActionSelector(
-            stateBattle.actionType,
-            user,
-            stateBattle.time
-          );
+          return aloneActionSelector(paramArr);
         }
       default:
     }
@@ -257,10 +221,8 @@ function Game(props) {
     } else {
       clearStatuses();
       let statusNumber = getSpecialDay();
-      let newDay =
-        stateBattle.time === NIGHT ? stateBattle.day + 1 : stateBattle.day;
       setStateBattle({
-        day: newDay,
+        day: stateBattle.time === NIGHT ? stateBattle.day + 1 : stateBattle.day,
         time: stateBattle.time === NIGHT ? DAY : NIGHT,
         action: dayStatusList[statusNumber].action,
         actionType: dayStatusList[statusNumber].actionType,

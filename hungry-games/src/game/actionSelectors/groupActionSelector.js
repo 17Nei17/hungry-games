@@ -6,14 +6,13 @@ import groupFloodAction from "../actions/flood-action/groupFloodAction.js";
 import groupFireAction from "../actions/fire-action/groupFireAction.js";
 
 function groupActionSelector(
-  actionType,
-  user,
+  arr,
   secondName,
   secondName2,
   anotherUserIndex,
-  anotherUserIndex2,
-  time
+  anotherUserIndex2
 ) {
+  let [actionType, user, time] = arr;
   let textMessage = "";
   switch (actionType) {
     case FLOOD:

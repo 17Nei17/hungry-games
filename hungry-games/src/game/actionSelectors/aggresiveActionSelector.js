@@ -5,13 +5,8 @@ import aggresiveFireAction from "../actions/fire-action/aggresiveFireAction.js";
 import getRandonNumber from "../helpers/getRandonNumber.js";
 import { DAY, FIRE, FLOOD } from "../helpers/constants.js";
 
-function aggresiveActionSelector(
-  actionType,
-  user,
-  diedUser,
-  diedUserIndex,
-  time
-) {
+function aggresiveActionSelector(arr, diedUser, diedUserIndex) {
+  let [actionType, user, time] = arr;
   let textMessage = "";
   switch (actionType) {
     case FLOOD:

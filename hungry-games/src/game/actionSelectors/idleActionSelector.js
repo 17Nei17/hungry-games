@@ -5,7 +5,8 @@ import idleFireAction from "../actions/fire-action/idleFireAction.js";
 import getRandonNumber from "../helpers/getRandonNumber.js";
 import { DAY, FIRE, FLOOD } from "../helpers/constants.js";
 
-function idleActionSelector(actionType, user, time) {
+function idleActionSelector(arr) {
+  let [actionType, user, time] = arr;
   let textMessage = "";
   switch (actionType) {
     case FLOOD:

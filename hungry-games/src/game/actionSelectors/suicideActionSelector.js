@@ -5,7 +5,8 @@ import suicideFireAction from "../actions/fire-action/suicideFireAction.js";
 import getRandonNumber from "../helpers/getRandonNumber.js";
 import { DAY, FIRE, FLOOD } from "../helpers/constants.js";
 
-function suicideActionSelector(actionType, user, time) {
+function suicideActionSelector(arr) {
+  let [actionType, user, time] = arr;
   let textMessage = "";
   switch (actionType) {
     case FLOOD:
