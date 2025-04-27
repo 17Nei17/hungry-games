@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 
 import shuffleArr from "./helpers/shuffleArr";
 import GameRender from "./GameRender.js";
+import DeadListRender from './deadListRender.js'
 import dayStatusList from "./helpers/dayStatusList";
 import getRandonNumber from "./helpers/getRandonNumber.js";
 
@@ -25,6 +26,8 @@ function Game(props) {
     time: DAY,
     actionType: "standart",
   });
+  const [isDeadListShow, setIsDeadListShow] = useState(false);
+  const [deadCharactersListAfterDay, setDeadCharactersListAfterDay] = useState([]);
 
   useEffect(() => {
     if (stateBattle.action !== "Начало первого дня") {
@@ -63,8 +66,18 @@ function Game(props) {
     newArray[newInfo.anotherUserIndex].isAlive =
       newInfo.isAggresiveAction ? false : true;
     if (!newArray[newInfo.anotherUserIndex].isAlive) {
-      movedUserInPostGameList(newArray[newInfo.anotherUserIndex], newArray[newInfo.anotherUserIndex])
+      movedUserInPostGameList(newArray[newInfo.anotherUserIndex], newArray[newInfo.anotherUserIndex]);
+      setDeadCharacters(newArray[newInfo.anotherUserIndex]);
     }
+  }
+
+  function setDeadCharacters(user) {
+    let xs = deadCharactersListAfterDay;
+    xs.push({
+      name: user.name,
+      img: user.img,
+    });
+    setDeadCharactersListAfterDay(xs);
   }
 
   function addStatuses() {
@@ -79,6 +92,7 @@ function Game(props) {
           // обычное назначение событий
           newInfo = setStatus(user, newArray);
           if (!newInfo.isAlive) {
+            setDeadCharacters(user);
             movedUserInPostGameList(user, newInfo);
           }
           newArray[index].statusText = newInfo.text;
@@ -213,28 +227,42 @@ function Game(props) {
   }
 
   function nextDay() {
-    clearStatuses();
-    let statusNumber = getSpecialDay();
-    let newDay =
-      stateBattle.time === NIGHT ? stateBattle.day + 1 : stateBattle.day;
-    setStateBattle({
-      day: newDay,
-      time: stateBattle.time === NIGHT ? DAY : NIGHT,
-      action: dayStatusList[statusNumber].action,
-      actionType: dayStatusList[statusNumber].actionType,
-    });
-    // addStatuses();
-    if (props.usersList.filter((user) => user.isAlive == true).length <= 1) {
-      props.endGame();
+    if (stateBattle.time === NIGHT && !isDeadListShow) {
+      setIsDeadListShow(true);
+    } else {
+      clearStatuses();
+      let statusNumber = getSpecialDay();
+      let newDay =
+        stateBattle.time === NIGHT ? stateBattle.day + 1 : stateBattle.day;
+      setStateBattle({
+        day: newDay,
+        time: stateBattle.time === NIGHT ? DAY : NIGHT,
+        action: dayStatusList[statusNumber].action,
+        actionType: dayStatusList[statusNumber].actionType,
+      });
+      if (props.usersList.filter((user) => user.isAlive == true).length <= 1) {
+        props.endGame();
+      }
+      if (stateBattle.time === NIGHT) {
+        setIsDeadListShow(false);
+        setDeadCharactersListAfterDay([]);
+      }
     }
+
   }
 
   return (
-    <GameRender
-      stateBattle={stateBattle}
-      nextDay={nextDay}
-      usersList={props.usersList}
-    ></GameRender>
+    <>
+      {!isDeadListShow && <GameRender
+        stateBattle={stateBattle}
+        nextDay={nextDay}
+        usersList={props.usersList}
+      ></GameRender>}
+      {isDeadListShow && <DeadListRender
+        deadCharactersListAfterDay={deadCharactersListAfterDay}
+        nextDay={nextDay}
+      ></DeadListRender>}
+    </>
   );
 }
 
