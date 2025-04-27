@@ -3,7 +3,7 @@ import friendlyActionDAY from "../actions/standart-action/day/friendlyActionDAY.
 import friendlyActionNIGHT from "../actions/standart-action/night/friendlyActionNIGHT.js";
 import friendlyFiredAction from "../actions/fire-action/friendlyFireAction.js";
 import getRandonNumber from "../helpers/getRandonNumber.js";
-import { DAY } from "../helpers/constants.js";
+import { DAY, FIRE, FLOOD } from "../helpers/constants.js";
 
 function friendlyActionSelector(
   actionType,
@@ -14,13 +14,13 @@ function friendlyActionSelector(
 ) {
   let textMessage = "";
   switch (actionType) {
-    case "flood":
+    case FLOOD:
       textMessage = friendlyFloodAction(
         getRandonNumber(friendlyFloodAction.caseLength),
         user.name,
         secondName
       );
-    case "fire":
+    case FIRE:
       textMessage = friendlyFiredAction(
         getRandonNumber(friendlyFiredAction.caseLength),
         user.name,

@@ -3,17 +3,17 @@ import aloneActionNIGHT from "../actions/standart-action/night/aloneActionNIGHT.
 import aloneFloodAction from "../actions/flood-action/aloneFloodAction.js";
 import aloneFireAction from "../actions/fire-action/aloneFireAction.js";
 import getRandonNumber from "../helpers/getRandonNumber.js";
-import { DAY } from "../helpers/constants.js";
+import { DAY, FIRE, FLOOD } from "../helpers/constants.js";
 
 function aloneActionSelector(actionType, user, time) {
   let textMessage = "";
   switch (actionType) {
-    case "flood":
+    case FLOOD:
       textMessage = aloneFloodAction(
         getRandonNumber(aloneFloodAction.caseLength),
         user.name
       );
-    case "fire":
+    case FIRE:
       textMessage = aloneFireAction(
         getRandonNumber(aloneFireAction.caseLength),
         user.name

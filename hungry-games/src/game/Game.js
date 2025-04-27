@@ -14,14 +14,22 @@ import aloneActionSelector from "./actionSelectors/aloneActionSelector.js";
 import idleActionSelector from "./actionSelectors/idleActionSelector.js";
 import aggresiveActionSelector from "./actionSelectors/aggresiveActionSelector.js";
 import groupActionSelector from "./actionSelectors/groupActionSelector.js";
-
-import { DAY } from "./helpers/constants.js";
-import { NIGHT } from "./helpers/constants.js";
+import actionSelector from "./helpers/actionSelector.js";
+import {
+  DAY,
+  NIGHT,
+  SUICIDE,
+  IDLE,
+  FRIENDLY,
+  AGGRESIVE,
+  GROUP,
+  FIRST_DAY,
+} from "./helpers/constants.js";
 
 function Game(props) {
   const [stateBattle, setStateBattle] = useState({
     day: 1,
-    action: "Начало первого дня",
+    action: FIRST_DAY,
     time: DAY,
     actionType: "standart",
   });
@@ -31,7 +39,7 @@ function Game(props) {
   );
 
   useEffect(() => {
-    if (stateBattle.action !== "Начало первого дня") {
+    if (stateBattle.action !== FIRST_DAY) {
       addStatuses();
       props.setdayTime(stateBattle.time);
     }
@@ -136,56 +144,45 @@ function Game(props) {
   }
 
   function setStatus(user, newArray) {
-    let action = getRandonNumber(100);
-    if (action >= 0 && action <= 10) {
-      action = "suicide";
-    } else if (action > 10 && action <= 45) {
-      action = "idle";
-    } else if (action > 45 && action <= 75) {
-      action = "friendly";
-    } else if (action > 75 && action <= 90) {
-      action = "aggresive";
-    } else if (action > 90 && action <= 100) {
-      action = "group";
-    }
-
-    const result = newArray.findIndex(
+    let action = actionSelector(getRandonNumber(100));
+    let freeСharacter = newArray.findIndex(
       (item) =>
         item.name !== user.name &&
         item.isAlive &&
         !item.isSettedStatus &&
         !item.isUsed
     );
-    let result2;
-    if (result !== -1) {
-      result2 = newArray.findIndex(
+    let secondFreeСharacter;
+    if (freeСharacter !== -1) {
+      secondFreeСharacter = newArray.findIndex(
         (item) =>
           item.name !== user.name &&
-          item.name !== newArray[result].name &&
+          item.name !== newArray[freeСharacter].name &&
           item.isAlive &&
           !item.isSettedStatus &&
           !item.isUsed
       );
     }
+
     switch (action) {
-      case "suicide":
+      case SUICIDE:
         // suicide
         return suicideActionSelector(
           stateBattle.actionType,
           user,
           stateBattle.time
         );
-      case "idle":
+      case IDLE:
         // idle
         return idleActionSelector(
           stateBattle.actionType,
           user,
           stateBattle.time
         );
-      case "friendly":
+      case FRIENDLY:
         // friendly
-        if (result !== -1) {
-          let anotherUserIndex = result;
+        if (freeСharacter !== -1) {
+          let anotherUserIndex = freeСharacter;
           let secondName = props.usersList[anotherUserIndex].name;
           return friendlyActionSelector(
             stateBattle.actionType,
@@ -201,10 +198,10 @@ function Game(props) {
             stateBattle.time
           );
         }
-      case "aggresive":
+      case AGGRESIVE:
         // aggresive
-        if (result !== -1) {
-          let diedUserIndex = result;
+        if (freeСharacter !== -1) {
+          let diedUserIndex = freeСharacter;
           let diedUser = props.usersList[diedUserIndex].name;
           return aggresiveActionSelector(
             stateBattle.actionType,
@@ -220,12 +217,12 @@ function Game(props) {
             stateBattle.time
           );
         }
-      case "group":
+      case GROUP:
         // group
-        if (result !== -1 && result2 !== -1) {
-          let anotherUserIndex = result;
+        if (freeСharacter !== -1 && secondFreeСharacter !== -1) {
+          let anotherUserIndex = freeСharacter;
           let secondName = props.usersList[anotherUserIndex].name;
-          let anotherUserIndex2 = result2;
+          let anotherUserIndex2 = secondFreeСharacter;
           let secondName2 = props.usersList[anotherUserIndex2].name;
           return groupActionSelector(
             stateBattle.actionType,

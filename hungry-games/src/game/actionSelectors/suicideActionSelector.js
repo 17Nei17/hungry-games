@@ -3,17 +3,17 @@ import suicideActionNIGHT from "../actions/standart-action/night/suicideActionNI
 import suicideFloodAction from "../actions/flood-action/suicideFloodAction.js";
 import suicideFireAction from "../actions/fire-action/suicideFireAction.js";
 import getRandonNumber from "../helpers/getRandonNumber.js";
-import { DAY } from "../helpers/constants.js";
+import { DAY, FIRE, FLOOD } from "../helpers/constants.js";
 
 function suicideActionSelector(actionType, user, time) {
   let textMessage = "";
   switch (actionType) {
-    case "flood":
+    case FLOOD:
       textMessage = suicideFloodAction(
         suicideFloodAction(suicideFloodAction.caseLength),
         user.name
       );
-    case "fire":
+    case FIRE:
       textMessage = suicideFireAction(
         suicideFireAction(suicideFireAction.caseLength),
         user.name

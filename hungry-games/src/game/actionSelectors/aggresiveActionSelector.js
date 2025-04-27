@@ -3,7 +3,7 @@ import AggresiveActionNIGHT from "../actions/standart-action/night/AggresiveActi
 import AggresiveFloodAction from "../actions/flood-action/aggresiveFloodAction.js";
 import aggresiveFireAction from "../actions/fire-action/aggresiveFireAction.js";
 import getRandonNumber from "../helpers/getRandonNumber.js";
-import { DAY } from "../helpers/constants.js";
+import { DAY, FIRE, FLOOD } from "../helpers/constants.js";
 
 function aggresiveActionSelector(
   actionType,
@@ -14,13 +14,13 @@ function aggresiveActionSelector(
 ) {
   let textMessage = "";
   switch (actionType) {
-    case "flood":
+    case FLOOD:
       textMessage = AggresiveFloodAction(
         getRandonNumber(AggresiveFloodAction.caseLength),
         user.name,
         diedUser
       );
-    case "fire":
+    case FIRE:
       textMessage = aggresiveFireAction(
         getRandonNumber(aggresiveFireAction.caseLength),
         user.name,

@@ -1,5 +1,5 @@
 import getRandonNumber from "../helpers/getRandonNumber.js";
-import { DAY } from "../helpers/constants.js";
+import { DAY, FIRE, FLOOD } from "../helpers/constants.js";
 import groupActionDAY from "../actions/standart-action/day/groupActionDAY.js";
 import groupActionNIGHT from "../actions/standart-action/night/groupActionNIGHT.js";
 import groupFloodAction from "../actions/flood-action/groupFloodAction.js";
@@ -16,7 +16,7 @@ function groupActionSelector(
 ) {
   let textMessage = "";
   switch (actionType) {
-    case "flood":
+    case FLOOD:
       textMessage = groupFloodAction(
         getRandonNumber(groupFloodAction.caseLength),
         user.name,
@@ -24,7 +24,7 @@ function groupActionSelector(
         secondName2,
         time
       );
-    case "fire":
+    case FIRE:
       textMessage = groupFireAction(
         getRandonNumber(groupFireAction.caseLength),
         user.name,

@@ -1,2 +1,11 @@
 export const DAY = "День";
 export const NIGHT = "Ночь";
+export const FIRST_DAY = "Начало первого дня";
+export const SUICIDE = "suicide";
+export const IDLE = "idle";
+export const FRIENDLY = "friendly";
+export const AGGRESIVE = "aggresive";
+export const GROUP = "group";
+export const FIRE = "fire";
+export const FLOOD = "flood";
+export const STANDART = "standart";
