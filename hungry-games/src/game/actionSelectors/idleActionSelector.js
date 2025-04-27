@@ -1,46 +1,41 @@
 import idleActionDAY from "../actions/standart-action/day/idleActionDAY.js";
-import idleActionNIGHT from "../actions/standart-action/night/idleActionNIGHT.js"
+import idleActionNIGHT from "../actions/standart-action/night/idleActionNIGHT.js";
 import IdleFloodAction from "../actions/flood-action/idleFloodAction.js";
 import idleFireAction from "../actions/fire-action/idleFireAction.js";
 import getRandonNumber from "../helpers/getRandonNumber.js";
-import { DAY } from '../helpers/constants.js';
+import { DAY } from "../helpers/constants.js";
 
 function idleActionSelector(actionType, user, time) {
+  let textMessage = "";
   switch (actionType) {
     case "flood":
-      return {
-        text: IdleFloodAction(
-          getRandonNumber(IdleFloodAction.caseLength),
-          user.name
-        ),
-        isAlive: true,
-        murdersNumber: user.murdersNumber,
-      };
+      textMessage = IdleFloodAction(
+        getRandonNumber(IdleFloodAction.caseLength),
+        user.name
+      );
     case "fire":
-      return {
-        text: idleFireAction(
-          getRandonNumber(idleFireAction.caseLength),
-          user.name
-        ),
-        isAlive: true,
-        murdersNumber: user.murdersNumber,
-      };
+      textMessage = idleFireAction(
+        getRandonNumber(idleFireAction.caseLength),
+        user.name
+      );
     default:
       if (time == DAY) {
-        return {
-          text: idleActionDAY(getRandonNumber(idleActionDAY.caseLength), user.name),
-          isAlive: true,
-          murdersNumber: user.murdersNumber,
-        };
+        textMessage = idleActionDAY(
+          getRandonNumber(idleActionDAY.caseLength),
+          user.name
+        );
       } else {
-        return {
-          text: idleActionNIGHT(getRandonNumber(idleActionNIGHT.caseLength), user.name),
-          isAlive: true,
-          murdersNumber: user.murdersNumber,
-        };
+        textMessage = idleActionNIGHT(
+          getRandonNumber(idleActionNIGHT.caseLength),
+          user.name
+        );
       }
-
   }
+  return {
+    text: textMessage,
+    isAlive: true,
+    murdersNumber: user.murdersNumber,
+  };
 }
 
 export default idleActionSelector;

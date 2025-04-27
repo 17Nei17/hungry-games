@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 
 import shuffleArr from "./helpers/shuffleArr";
 import GameRender from "./GameRender.js";
-import DeadListRender from './deadListRender.js'
+import DeadListRender from "./deadListRender.js";
 import dayStatusList from "./helpers/dayStatusList";
 import getRandonNumber from "./helpers/getRandonNumber.js";
 
@@ -13,11 +13,10 @@ import friendlyActionSelector from "./actionSelectors/friendlyActionSelector.js"
 import aloneActionSelector from "./actionSelectors/aloneActionSelector.js";
 import idleActionSelector from "./actionSelectors/idleActionSelector.js";
 import aggresiveActionSelector from "./actionSelectors/aggresiveActionSelector.js";
-import groupActionSelector from './actionSelectors/groupActionSelector.js'
+import groupActionSelector from "./actionSelectors/groupActionSelector.js";
 
-import { DAY } from './helpers/constants.js'
-import { NIGHT } from './helpers/constants.js'
-
+import { DAY } from "./helpers/constants.js";
+import { NIGHT } from "./helpers/constants.js";
 
 function Game(props) {
   const [stateBattle, setStateBattle] = useState({
@@ -27,7 +26,9 @@ function Game(props) {
     actionType: "standart",
   });
   const [isDeadListShow, setIsDeadListShow] = useState(false);
-  const [deadCharactersListAfterDay, setDeadCharactersListAfterDay] = useState([]);
+  const [deadCharactersListAfterDay, setDeadCharactersListAfterDay] = useState(
+    []
+  );
 
   useEffect(() => {
     if (stateBattle.action !== "Начало первого дня") {
@@ -56,17 +57,23 @@ function Game(props) {
 
   function setAggresive_FriendlyStatuses(index, newArray, newInfo) {
     if (newInfo.anotherUserIndex2 !== undefined) {
-      newArray[index].secondUser = [newArray[newInfo.anotherUserIndex], newArray[newInfo.anotherUserIndex2]];
+      newArray[index].secondUser = [
+        newArray[newInfo.anotherUserIndex],
+        newArray[newInfo.anotherUserIndex2],
+      ];
       newArray[newInfo.anotherUserIndex2].isUsed = true;
-    }
-    else {
+    } else {
       newArray[index].secondUser = [newArray[newInfo.anotherUserIndex]];
     }
     newArray[newInfo.anotherUserIndex].isUsed = true;
-    newArray[newInfo.anotherUserIndex].isAlive =
-      newInfo.isAggresiveAction ? false : true;
+    newArray[newInfo.anotherUserIndex].isAlive = newInfo.isAggresiveAction
+      ? false
+      : true;
     if (!newArray[newInfo.anotherUserIndex].isAlive) {
-      movedUserInPostGameList(newArray[newInfo.anotherUserIndex], newArray[newInfo.anotherUserIndex]);
+      movedUserInPostGameList(
+        newArray[newInfo.anotherUserIndex],
+        newArray[newInfo.anotherUserIndex]
+      );
       setDeadCharacters(newArray[newInfo.anotherUserIndex]);
     }
   }
@@ -153,7 +160,8 @@ function Game(props) {
     if (result !== -1) {
       result2 = newArray.findIndex(
         (item) =>
-          item.name !== user.name && item.name !== newArray[result].name &&
+          item.name !== user.name &&
+          item.name !== newArray[result].name &&
           item.isAlive &&
           !item.isSettedStatus &&
           !item.isUsed
@@ -162,10 +170,18 @@ function Game(props) {
     switch (action) {
       case "suicide":
         // suicide
-        return suicideActionSelector(stateBattle.actionType, user, stateBattle.time);
+        return suicideActionSelector(
+          stateBattle.actionType,
+          user,
+          stateBattle.time
+        );
       case "idle":
         // idle
-        return idleActionSelector(stateBattle.actionType, user, stateBattle.time);
+        return idleActionSelector(
+          stateBattle.actionType,
+          user,
+          stateBattle.time
+        );
       case "friendly":
         // friendly
         if (result !== -1) {
@@ -179,7 +195,11 @@ function Game(props) {
             stateBattle.time
           );
         } else {
-          return aloneActionSelector(stateBattle.actionType, user, stateBattle.time);
+          return aloneActionSelector(
+            stateBattle.actionType,
+            user,
+            stateBattle.time
+          );
         }
       case "aggresive":
         // aggresive
@@ -194,7 +214,11 @@ function Game(props) {
             stateBattle.time
           );
         } else {
-          return aloneActionSelector(stateBattle.actionType, user, stateBattle.time);
+          return aloneActionSelector(
+            stateBattle.actionType,
+            user,
+            stateBattle.time
+          );
         }
       case "group":
         // group
@@ -213,7 +237,11 @@ function Game(props) {
             stateBattle.time
           );
         } else {
-          return aloneActionSelector(stateBattle.actionType, user, stateBattle.time);
+          return aloneActionSelector(
+            stateBattle.actionType,
+            user,
+            stateBattle.time
+          );
         }
       default:
     }
@@ -248,20 +276,23 @@ function Game(props) {
         setDeadCharactersListAfterDay([]);
       }
     }
-
   }
 
   return (
     <>
-      {!isDeadListShow && <GameRender
-        stateBattle={stateBattle}
-        nextDay={nextDay}
-        usersList={props.usersList}
-      ></GameRender>}
-      {isDeadListShow && <DeadListRender
-        deadCharactersListAfterDay={deadCharactersListAfterDay}
-        nextDay={nextDay}
-      ></DeadListRender>}
+      {!isDeadListShow && (
+        <GameRender
+          stateBattle={stateBattle}
+          nextDay={nextDay}
+          usersList={props.usersList}
+        ></GameRender>
+      )}
+      {isDeadListShow && (
+        <DeadListRender
+          deadCharactersListAfterDay={deadCharactersListAfterDay}
+          nextDay={nextDay}
+        ></DeadListRender>
+      )}
     </>
   );
 }

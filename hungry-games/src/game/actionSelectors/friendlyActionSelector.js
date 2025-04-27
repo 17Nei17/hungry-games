@@ -1,9 +1,9 @@
 import friendlyFloodAction from "../actions/flood-action/friendlyFloodAction.js";
 import friendlyActionDAY from "../actions/standart-action/day/friendlyActionDAY.js";
-import friendlyActionNIGHT from "../actions/standart-action/night/friendlyActionNIGHT.js"
+import friendlyActionNIGHT from "../actions/standart-action/night/friendlyActionNIGHT.js";
 import friendlyFiredAction from "../actions/fire-action/friendlyFireAction.js";
 import getRandonNumber from "../helpers/getRandonNumber.js";
-import { DAY } from '../helpers/constants.js';
+import { DAY } from "../helpers/constants.js";
 
 function friendlyActionSelector(
   actionType,
@@ -12,57 +12,43 @@ function friendlyActionSelector(
   anotherUserIndex,
   time
 ) {
+  let textMessage = "";
   switch (actionType) {
     case "flood":
-      return {
-        text: friendlyFloodAction(
-          getRandonNumber(friendlyFloodAction.caseLength),
-          user.name,
-          secondName
-        ),
-        isAlive: true,
-        anotherUserIndex: anotherUserIndex,
-        murdersNumber: user.murdersNumber,
-      };
+      textMessage = friendlyFloodAction(
+        getRandonNumber(friendlyFloodAction.caseLength),
+        user.name,
+        secondName
+      );
     case "fire":
-      return {
-        text: friendlyFiredAction(
-          getRandonNumber(friendlyFiredAction.caseLength),
-          user.name,
-          secondName
-        ),
-        isAlive: true,
-        anotherUserIndex: anotherUserIndex,
-        murdersNumber: user.murdersNumber,
-      };
+      textMessage = friendlyFiredAction(
+        getRandonNumber(friendlyFiredAction.caseLength),
+        user.name,
+        secondName
+      );
     default:
       if (time == DAY) {
-        return {
-          text: friendlyActionDAY(
-            getRandonNumber(friendlyActionDAY.caseLength),
-            user.name,
-            secondName,
-            time
-          ),
-          isAlive: true,
-          anotherUserIndex: anotherUserIndex,
-          murdersNumber: user.murdersNumber,
-        };
+        textMessage = friendlyActionDAY(
+          getRandonNumber(friendlyActionDAY.caseLength),
+          user.name,
+          secondName,
+          time
+        );
       } else {
-        return {
-          text: friendlyActionNIGHT(
-            getRandonNumber(friendlyActionNIGHT.caseLength),
-            user.name,
-            secondName,
-            time
-          ),
-          isAlive: true,
-          anotherUserIndex: anotherUserIndex,
-          murdersNumber: user.murdersNumber,
-        };
+        textMessage = friendlyActionNIGHT(
+          getRandonNumber(friendlyActionNIGHT.caseLength),
+          user.name,
+          secondName,
+          time
+        );
       }
-
   }
+  return {
+    text: textMessage,
+    isAlive: true,
+    anotherUserIndex: anotherUserIndex,
+    murdersNumber: user.murdersNumber,
+  };
 }
 
 export default friendlyActionSelector;

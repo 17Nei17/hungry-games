@@ -13,7 +13,7 @@ function AggresiveActionDAY(number = 0, name1 = "", name2 = "") {
     `<span class='member-name'>${name2}</span> помогает <span class='member-name'>${name1}</span> вылезти из ямы... а затем <span class='member-name'>${name1}</span> cталкивает $<span class='member-name'>${name2}</span> в яму, из-за чего тот погибает`,
     `<span class='member-name'>${name1}</span> угощает <span class='member-name'>${name2}</span> пирожком... пирожок оказался динамитом`,
     `<span class='member-name'>${name1}</span> кричит "Осторожно!" <span class='member-name'>${name2}</span>, и тот умирает от испуга, поскользнувшись на мху`,
-    `<span class='member-name'>${name1}</span> прицеливается из лука, долго колеблется — и всё же стреляет в <span class='member-name'>${name2}</span>`
+    `<span class='member-name'>${name1}</span> прицеливается из лука, долго колеблется — и всё же стреляет в <span class='member-name'>${name2}</span>`,
   ];
   return AggresiveActionArr[number];
 }

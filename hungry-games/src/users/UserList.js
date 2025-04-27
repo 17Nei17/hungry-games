@@ -8,7 +8,7 @@ import getRandonNumber from "../game/helpers/getRandonNumber";
 function UserList(props) {
   const [isShowForm, setShowForm] = useState(false);
 
-  useEffect(() => { });
+  useEffect(() => {});
 
   function renderUsers() {
     return props.usersList.map((user) => (
@@ -46,10 +46,12 @@ function UserList(props) {
           gender: userObject.gender,
           friend: userObject.friend,
           isAlive: true,
-          statusText: startGameAction(getRandonNumber(startGameAction.caseLength)),
+          statusText: startGameAction(
+            getRandonNumber(startGameAction.caseLength)
+          ),
           isfinallyMovedFromGame: false,
           murdersNumber: 0,
-          secondUser: []
+          secondUser: [],
         },
       ]);
       props.setHelpText("");

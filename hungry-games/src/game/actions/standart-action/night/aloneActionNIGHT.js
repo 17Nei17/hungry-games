@@ -7,7 +7,7 @@ function aloneActionNIGHT(number = 0, name1 = "") {
     `<span class='member-name'>${name1}</span> строит шалаш и гордо говорит “мы сделали это”`,
     `<span class='member-name'>${name1}</span> устраивает чаепитие с мёртвой белкой`,
     `<span class='member-name'>${name1}</span> идёт в лес, чтобы "найти своё альтер эго" — и возвращается с куском мха`,
-    `<span class='member-name'>${name1}</span> утверждает, что сырок прошептал ему, куда идти ночью. Он сходил и нашел тапки, мел и гранатомет`
+    `<span class='member-name'>${name1}</span> утверждает, что сырок прошептал ему, куда идти ночью. Он сходил и нашел тапки, мел и гранатомет`,
   ];
   return aloneActionArr[number];
 }

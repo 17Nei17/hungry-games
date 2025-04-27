@@ -16,7 +16,7 @@ function idleActionNIGHT(number = 0, name1 = "") {
     `<span class='member-name'>${name1}</span> ищет в темноте знакомые запахи целебных трав`,
     `<span class='member-name'>${name1}</span> шепчет себе: “ещё немного… только продержаться до рассвета”`,
     `<span class='member-name'>${name1}</span> шепчет себе под нос, чтобы не сойти с ума от боли`,
-    `<span class='member-name'>${name1}</span> слышит тихий хруст обёртки. Оборачивается — рядом никого, только свежий сырок на пеньке.`
+    `<span class='member-name'>${name1}</span> слышит тихий хруст обёртки. Оборачивается — рядом никого, только свежий сырок на пеньке.`,
   ];
 
   return idleActionArr[number];

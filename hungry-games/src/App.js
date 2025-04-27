@@ -6,7 +6,7 @@ import End from "./end/End";
 import About from "./about/About";
 import startGameAction from "./game/actions/start-game-action/startGameAction";
 import getRandonNumber from "./game/helpers/getRandonNumber";
-import { DAY } from './game/helpers/constants';
+import { DAY } from "./game/helpers/constants";
 
 let version = "ver 1.0.4";
 
@@ -41,7 +41,9 @@ function App() {
     oldArrUserList.forEach((user) => {
       user.isUsed = false;
       user.isAlive = true;
-      user.statusText = startGameAction(getRandonNumber(startGameAction.caseLength));
+      user.statusText = startGameAction(
+        getRandonNumber(startGameAction.caseLength)
+      );
       user.isfinallyMovedFromGame = false;
       user.murdersNumber = 0;
       user.secondUser = [];
@@ -51,7 +53,7 @@ function App() {
   }
 
   return (
-    <div className={dayTime === DAY ? 'App day' : 'App night'}>
+    <div className={dayTime === DAY ? "App day" : "App night"}>
       <div className="info-text">{version}</div>
       <div className="info-text">Набор действий - {actionSettings}</div>
       <div className="info-text">{helpText}</div>

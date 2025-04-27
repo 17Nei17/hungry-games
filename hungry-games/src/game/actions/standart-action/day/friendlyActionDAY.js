@@ -16,11 +16,9 @@ function friendlyActionDAY(number = 0, name1 = "", name2 = "") {
     `<span class='member-name'>${name1}</span> умывает <span class='member-name'>${name2}</span>, как заботливая мама`,
     `<span class='member-name'>${name1}</span> слушает рассказы <span class='member-name'>${name2}</span> с искренним интересом и блестящими глазами`,
     `<span class='member-name'>${name1}</span> и <span class='member-name'>${name2}</span> собирают ягоды, смеясь и переглядываясь`,
-    `<span class='member-name'>${name1}</span> учит <span class='member-name'>${name2}</span> правильно держать лук`
-
+    `<span class='member-name'>${name1}</span> учит <span class='member-name'>${name2}</span> правильно держать лук`,
   ];
   return friendlyActionArr[number];
-
 }
 
 friendlyActionDAY();
@@ -28,5 +26,3 @@ friendlyActionDAY();
 friendlyActionDAY.caseLength = friendlyActionArr.length;
 
 export default friendlyActionDAY;
-
-

@@ -2,8 +2,6 @@ import React from "react";
 import JsxParser from "react-jsx-parser";
 
 function GameRender(props) {
-
-
   function additionalUsersList(user) {
     return user.secondUser.map((item) => (
       <div className={(item.isAlive ? "alive" : "dead") + " userItem"}>
@@ -44,8 +42,8 @@ function GameRender(props) {
               user.isUsed
                 ? "userItem hidden"
                 : "userItem" +
-                (user.isfinallyMovedFromGame ? " ordered" : "") +
-                additionalClass
+                  (user.isfinallyMovedFromGame ? " ordered" : "") +
+                  additionalClass
             }
           >
             <div className="userName">{user.name}</div>
