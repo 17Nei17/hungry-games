@@ -14,39 +14,28 @@ function groupActionSelector(
 ) {
   let [actionType, user, time] = arr;
   let textMessage = "";
+  let paramArr = [user.name, secondName, secondName2, time];
   switch (actionType) {
     case FLOOD:
       textMessage = groupFloodAction(
         getRandonNumber(groupFloodAction.caseLength),
-        user.name,
-        secondName,
-        secondName2,
-        time
+        paramArr
       );
     case FIRE:
       textMessage = groupFireAction(
         getRandonNumber(groupFireAction.caseLength),
-        user.name,
-        secondName,
-        secondName2,
-        time
+        paramArr
       );
     default:
       if (time == DAY) {
         textMessage = groupActionDAY(
           getRandonNumber(groupActionDAY.caseLength),
-          user.name,
-          secondName,
-          secondName2,
-          time
+          paramArr
         );
       } else {
         textMessage = groupActionNIGHT(
           getRandonNumber(groupActionNIGHT.caseLength),
-          user.name,
-          secondName,
-          secondName2,
-          time
+          paramArr
         );
       }
   }

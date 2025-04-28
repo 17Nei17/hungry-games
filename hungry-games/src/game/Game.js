@@ -22,6 +22,7 @@ import {
   AGGRESIVE,
   GROUP,
   FIRST_DAY,
+  STANDART,
 } from "./helpers/constants.js";
 
 function Game(props) {
@@ -29,7 +30,7 @@ function Game(props) {
     day: 1,
     action: FIRST_DAY,
     time: DAY,
-    actionType: "standart",
+    actionType: STANDART,
   });
   const [isDeadListShow, setIsDeadListShow] = useState(false);
   const [deadCharactersListAfterDay, setDeadCharactersListAfterDay] = useState(

@@ -1,5 +1,6 @@
 let aloneActionArr = [];
-function groupActionDAY(number = 0, name1 = "", name2 = "", name3 = "") {
+function groupActionDAY(number, arr = []) {
+  let [name1 = "", name2 = "", name3 = ""] = arr;
   aloneActionArr = [
     `<span class='member-name'>${name1}</span>, <span class='member-name'>${name2}</span>, <span class='member-name'>${name3}</span> молятся мху `,
     `<span class='member-name'>${name1}</span>, <span class='member-name'>${name2}</span>, <span class='member-name'>${name3}</span> собираются вместе и обсуждают планы на следующий день`,
