@@ -11,9 +11,13 @@ function End(props) {
         <div>
           <span>В живых остался только:</span>
           <span className="member-name">{AliveObject[0].name}</span>
-          <div><img className="userImage" src={AliveObject[0].img} /></div>
-          <div>Количество убийств - {AliveObject[0].murdersNumber}</div>
-
+          <div>
+            <img className="userImage" src={AliveObject[0].img} />
+          </div>
+          <div>
+            Количество убийств -{" "}
+            <span className="kills-num">{AliveObject[0].murdersNumber}</span>
+          </div>
         </div>
       );
     } else {
@@ -29,9 +33,14 @@ function End(props) {
     return newArr.map((user, index) => (
       <div className="userItem">
         <div className="member-name">{user.name}</div>
-        <div>Место:{index + 2}</div>
+        <div>
+          Место: <span className="place-num">{index + 2}</span>
+        </div>
         <img className="userImage" src={user.img} />
-        <div>Количество убийств - {user.murdersNumber}</div>
+        <div>
+          Количество убийств -{" "}
+          <span className="kills-num">{user.murdersNumber}</span>
+        </div>
       </div>
     ));
   }

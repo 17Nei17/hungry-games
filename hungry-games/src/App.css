@@ -165,16 +165,27 @@ button:hover,
   background-color: burlywood;
 }
 
-button+button {
+button + button {
   margin-left: 12px;
 }
 
 .info-text {
-  color: red
+  color: red;
 }
 
 .about-button {
   position: absolute;
   left: 0;
   bottom: 0;
+}
+
+.kills-num {
+  font-size: 16px;
+  color: red;
+  font-weight: bold;
+}
+
+.place-num {
+  font-size: 16px;
+  font-weight: bold;
 }
